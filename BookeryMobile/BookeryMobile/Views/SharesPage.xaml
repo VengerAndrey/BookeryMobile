@@ -30,6 +30,13 @@
                     </StackLayout>
                 </DataTemplate>
             </CollectionView.ItemTemplate>
+            <CollectionView.EmptyView>
+                <ContentView>
+                    <StackLayout Padding="50" HorizontalOptions="Center" VerticalOptions="Center">
+                        <Label Text="No courses yet." FontSize="Large" Margin="10" />
+                    </StackLayout>
+                </ContentView>
+            </CollectionView.EmptyView>
         </CollectionView>
     </RefreshView>
 </ContentPage>

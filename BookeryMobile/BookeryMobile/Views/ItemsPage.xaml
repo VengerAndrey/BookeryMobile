@@ -3,7 +3,7 @@
 <ContentPage xmlns="http://xamarin.com/schemas/2014/forms"
              xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
              xmlns:viewModels="clr-namespace:BookeryMobile.ViewModels;assembly=BookeryMobile"
-             xmlns:models="clr-namespace:Domain.Models;assembly=Domain"
+             xmlns:models="clr-namespace:BookeryMobile.Models;assembly=BookeryMobile"
              x:Class="BookeryMobile.Views.ItemsPage"
              Title="{Binding Title}">
     <RefreshView x:DataType="viewModels:ItemsViewModel" Command="{Binding LoadItemsCommand}"
@@ -13,18 +13,29 @@
                         SelectionMode="None">
             <CollectionView.ItemTemplate>
                 <DataTemplate>
-                    <StackLayout Padding="10" x:DataType="models:Item">
-                        <Label Text="{Binding Name}"
+                    <StackLayout Padding="10" x:DataType="models:ItemElement" Orientation="Horizontal"
+                                 HeightRequest="28">
+                        <Image Source="{Binding ImageSource}" Aspect="AspectFit"
+                               HorizontalOptions="Center" VerticalOptions="Center" />
+                        <Label Text="{Binding Item.Name}"
                                FontSize="20" />
                         <StackLayout.GestureRecognizers>
                             <TapGestureRecognizer
                                 NumberOfTapsRequired="1"
                                 Command="{Binding Source={RelativeSource AncestorType={x:Type viewModels:ItemsViewModel}}, Path=SelectItemCommand}"
-                                CommandParameter="{Binding .}" />
+                                CommandParameter="{Binding Item}" />
                         </StackLayout.GestureRecognizers>
                     </StackLayout>
                 </DataTemplate>
             </CollectionView.ItemTemplate>
+            <CollectionView.EmptyView>
+                <ContentView>
+                    <StackLayout Padding="50" HorizontalOptions="Center" VerticalOptions="Center">
+                        <Image Source="noFiles.png" HeightRequest="100" />
+                        <Label Text="It looks like it's empty here." FontSize="Large" Margin="10" />
+                    </StackLayout>
+                </ContentView>
+            </CollectionView.EmptyView>
         </CollectionView>
     </RefreshView>
 </ContentPage>

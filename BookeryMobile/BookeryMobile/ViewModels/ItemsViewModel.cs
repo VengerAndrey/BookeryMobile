@@ -1,6 +1,8 @@
 ﻿using System.Collections.ObjectModel;
 using System.IO;
 using BookeryApi.Services.Storage;
+using BookeryMobile.Common;
+using BookeryMobile.Models;
 using BookeryMobile.Views;
 using Domain.Models;
 using Xamarin.Essentials;
@@ -19,13 +21,13 @@ namespace BookeryMobile.ViewModels
             _navigation = navigation;
             _item = item;
             Title = item.Name;
-            Items = new ObservableCollection<Item>();
+            Items = new ObservableCollection<ItemElement>();
 
             LoadItemsCommand = new Command(LoadItems);
             SelectItemCommand = new Command<Item>(OnSelectItem);
         }
 
-        public ObservableCollection<Item> Items { get; }
+        public ObservableCollection<ItemElement> Items { get; }
 
         public Command LoadItemsCommand { get; }
         public Command<Item> SelectItemCommand { get; }
@@ -39,7 +41,11 @@ namespace BookeryMobile.ViewModels
             {
                 foreach (var item in items)
                 {
-                    Items.Add(item);
+                    Items.Add(new ItemElement
+                    {
+                        Item = item,
+                        ImageSource = ItemImageHelper.GetImageSource(item)
+                    });
                 }
             }
 
