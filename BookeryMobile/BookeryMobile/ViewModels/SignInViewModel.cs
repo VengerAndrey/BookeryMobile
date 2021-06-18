@@ -20,6 +20,10 @@ namespace BookeryMobile.ViewModels
                 {
                     await Shell.Current.GoToAsync($"//{nameof(SharesPage)}");
                 }
+                else
+                {
+                    Application.Current.MainPage = new AppShell();
+                }
             };
         }
 

@@ -2,6 +2,7 @@
 using Android.Content.PM;
 using Android.OS;
 using Android.Runtime;
+using Rg.Plugins.Popup;
 using Xamarin.Forms;
 using Xamarin.Forms.Platform.Android;
 using Platform = Xamarin.Essentials.Platform;
@@ -17,6 +18,8 @@ namespace BookeryMobile.Droid
         {
             base.OnCreate(savedInstanceState);
 
+            Popup.Init(this);
+
             Platform.Init(this, savedInstanceState);
             Forms.Init(this, savedInstanceState);
             LoadApplication(new App());
@@ -28,6 +31,11 @@ namespace BookeryMobile.Droid
             Platform.OnRequestPermissionsResult(requestCode, permissions, grantResults);
 
             base.OnRequestPermissionsResult(requestCode, permissions, grantResults);
+        }
+
+        public override void OnBackPressed()
+        {
+            Popup.SendBackPressed(base.OnBackPressed);
         }
     }
 }

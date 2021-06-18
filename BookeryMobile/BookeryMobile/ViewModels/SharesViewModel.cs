@@ -3,18 +3,23 @@ using System.Collections.ObjectModel;
 using System.Diagnostics;
 using System.Threading.Tasks;
 using BookeryApi.Services.Storage;
+using BookeryMobile.Services.Authentication;
 using BookeryMobile.Views;
 using Domain.Models;
+using Rg.Plugins.Popup.Pages;
+using Rg.Plugins.Popup.Services;
 using Xamarin.Forms;
 
 namespace BookeryMobile.ViewModels
 {
     public class SharesViewModel : BaseViewModel
     {
+        private readonly IAuthenticator _authenticator = DependencyService.Get<IAuthenticator>();
         private readonly INavigation _navigation;
         private readonly IShareService _shareService = DependencyService.Get<IShareService>();
-
         private Share _currentShare;
+
+        private PopupPage _page;
 
         public SharesViewModel(INavigation navigation)
         {
@@ -23,9 +28,24 @@ namespace BookeryMobile.ViewModels
             Shares = new ObservableCollection<Share>();
             LoadSharesCommand = new Command(async () => await LoadShares());
 
-            SelectShareCommand = new Command<Share>(OnShareSelected);
+            SelectShareCommand = new Command<Share>(SelectShare);
 
-            AddShareCommand = new Command(OnAddShare);
+            AddShareCommand = new Command(AddShare);
+
+            PopupNavigation.Instance.Popping += (sender, args) =>
+            {
+                if (PopupNavigation.Instance.PopupStack.Count > 0 && args.Page == _page)
+                {
+                    OnAppearing();
+                }
+            };
+
+            _authenticator.StateChanged += () =>
+            {
+                if (!_authenticator.IsSignedIn)
+                {
+                }
+            };
         }
 
         public ObservableCollection<Share> Shares { get; }
@@ -39,7 +59,7 @@ namespace BookeryMobile.ViewModels
             set
             {
                 SetProperty(ref _currentShare, value);
-                OnShareSelected(value);
+                SelectShare(value);
             }
         }
 
@@ -72,12 +92,12 @@ namespace BookeryMobile.ViewModels
             CurrentShare = null;
         }
 
-        private void OnAddShare(object obj)
+        private void AddShare()
         {
-            //await Shell.Current.GoToAsync(nameof(NewItemPage));
+            PushPopupPage(new AlterSharePage());
         }
 
-        private async void OnShareSelected(Share share)
+        private async void SelectShare(Share share)
         {
             if (share != null)
             {
@@ -91,26 +111,12 @@ namespace BookeryMobile.ViewModels
 
                 await _navigation.PushAsync(new ItemsPage(item));
             }
+        }
 
-
-            /*IsBusy = true;
-
-            try
-            {
-                Shares.Clear();
-                var random = new Random();
-            }
-            catch (Exception ex)
-            {
-                Debug.WriteLine(ex);
-            }
-            finally
-            {
-                IsBusy = false;
-            }*/
-
-            // This will push the ItemDetailPage onto the navigation stack
-            //await Shell.Current.GoToAsync($"{nameof(ItemDetailPage)}?{nameof(ItemDetailViewModel.ItemId)}={item.Id}");
+        private async void PushPopupPage(PopupPage page)
+        {
+            _page = page;
+            await PopupNavigation.Instance.PushAsync(_page);
         }
     }
 }

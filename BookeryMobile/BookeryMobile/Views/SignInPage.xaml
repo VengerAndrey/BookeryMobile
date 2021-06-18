@@ -10,25 +10,26 @@
              Shell.FlyoutBehavior="Disabled">
     <ContentPage.Content>
         <StackLayout Padding="10,0,10,0" VerticalOptions="Center">
+            <Label Text="Bookery" FontSize="50" VerticalOptions="Start" HorizontalOptions="Center" Margin="0, 0, 0, 20" />
             <Grid>
                 <Grid.ColumnDefinitions>
-                    <ColumnDefinition Width="0.5*" />
+                    <ColumnDefinition Width="0.55*" />
                     <ColumnDefinition Width="*" />
                 </Grid.ColumnDefinitions>
-                <Label Grid.Column="0" Text="Email" FontSize="Large" Margin="15" />
-                <Entry Grid.Column="1" Placeholder="Enter your email" FontSize="Large"
+                <Label Grid.Column="0" Text="Email" FontSize="24" Margin="15" />
+                <Entry Grid.Column="1" Placeholder="Enter your email" FontSize="24"
                        Text="{Binding Email, Mode=TwoWay}" />
             </Grid>
             <Grid>
                 <Grid.ColumnDefinitions>
-                    <ColumnDefinition Width="0.5*" />
+                    <ColumnDefinition Width="0.55*" />
                     <ColumnDefinition Width="*" />
                 </Grid.ColumnDefinitions>
-                <Label Grid.Column="0" Text="Password" FontSize="Large" Margin="15" />
-                <Entry Grid.Column="1" Placeholder="Enter your password" FontSize="Large"
+                <Label Grid.Column="0" Text="Password" FontSize="24" Margin="15" />
+                <Entry Grid.Column="1" Placeholder="Enter your password" FontSize="24"
                        Text="{Binding Password, Mode=TwoWay}" />
             </Grid>
-            <Button VerticalOptions="Center" Text="Login" Margin="20"
+            <Button HorizontalOptions="Center" Text="Log in" Margin="0, 20, 0, 20"
                     Command="{Binding SignInCommand}" />
         </StackLayout>
     </ContentPage.Content>

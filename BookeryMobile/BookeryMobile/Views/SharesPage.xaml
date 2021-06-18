@@ -9,7 +9,7 @@
              x:Name="BrowseItemsPage">
 
     <ContentPage.ToolbarItems>
-        <ToolbarItem Text="Add" Command="{Binding AddItemCommand}" />
+        <ToolbarItem IconImageSource="add.png" x:DataType="local:SharesViewModel" Command="{Binding AddShareCommand}" />
     </ContentPage.ToolbarItems>
     <RefreshView x:DataType="local:SharesViewModel" Command="{Binding LoadSharesCommand}"
                  IsRefreshing="{Binding IsBusy, Mode=TwoWay}">
@@ -18,9 +18,10 @@
                         SelectionMode="None">
             <CollectionView.ItemTemplate>
                 <DataTemplate>
-                    <StackLayout Padding="10" x:DataType="models:Share">
-                        <Label Text="{Binding Name}"
-                               FontSize="20" />
+                    <StackLayout Padding="10" Orientation="Horizontal" x:DataType="models:Share">
+                        <Image Source="course.png" HeightRequest="24"
+                               HorizontalOptions="Center" VerticalOptions="Center" />
+                        <Label Text="{Binding Name}" />
                         <StackLayout.GestureRecognizers>
                             <TapGestureRecognizer
                                 NumberOfTapsRequired="1"
