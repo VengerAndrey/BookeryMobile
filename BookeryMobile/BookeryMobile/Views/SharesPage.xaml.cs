@@ -10,7 +10,6 @@ namespace BookeryMobile.Views
         public SharesPage()
         {
             InitializeComponent();
-
             BindingContext = _viewModel = new SharesViewModel(Navigation);
         }
 

@@ -13,22 +13,37 @@
     </ContentPage.ToolbarItems>
     <RefreshView x:DataType="local:SharesViewModel" Command="{Binding LoadSharesCommand}"
                  IsRefreshing="{Binding IsBusy, Mode=TwoWay}">
-        <CollectionView x:Name="ItemsListView"
+        <CollectionView x:Name="SharesListView"
                         ItemsSource="{Binding Shares}"
                         SelectionMode="None">
             <CollectionView.ItemTemplate>
                 <DataTemplate>
-                    <StackLayout Padding="10" Orientation="Horizontal" x:DataType="models:Share">
-                        <Image Source="course.png" HeightRequest="24"
-                               HorizontalOptions="Center" VerticalOptions="Center" />
-                        <Label Text="{Binding Name}" />
-                        <StackLayout.GestureRecognizers>
-                            <TapGestureRecognizer
-                                NumberOfTapsRequired="1"
-                                Command="{Binding Source={RelativeSource AncestorType={x:Type local:SharesViewModel}}, Path=SelectShareCommand}"
-                                CommandParameter="{Binding .}" />
-                        </StackLayout.GestureRecognizers>
-                    </StackLayout>
+                    <SwipeView>
+                        <SwipeView.LeftItems>
+                            <SwipeItems SwipeBehaviorOnInvoked="Close">
+                                <SwipeItemView Command="{Binding Source={x:Reference SharesListView}, Path=BindingContext.RenameShareCommand}"
+                                               CommandParameter="{Binding Source={RelativeSource Self}, Path=BindingContext}">
+                                    <Image Source="rename.png" Aspect="AspectFit" Margin="5" WidthRequest="40" />
+                                </SwipeItemView>
+                                <SwipeItemView Command="{Binding Source={x:Reference SharesListView}, Path=BindingContext.DeleteShareCommand}"
+                                               CommandParameter="{Binding Source={RelativeSource Self}, Path=BindingContext}">
+                                    <Image Source="delete.png" Aspect="AspectFit" Margin="5" WidthRequest="40" />
+                                </SwipeItemView>
+                            </SwipeItems>
+                        </SwipeView.LeftItems>
+                        <StackLayout Padding="10" Orientation="Horizontal" x:DataType="models:Share"
+                                     BackgroundColor="White">
+                            <Image Source="course.png" HeightRequest="24"
+                                   HorizontalOptions="Center" VerticalOptions="Center" />
+                            <Label Text="{Binding Name}" />
+                            <StackLayout.GestureRecognizers>
+                                <TapGestureRecognizer
+                                    NumberOfTapsRequired="1"
+                                    Command="{Binding Source={RelativeSource AncestorType={x:Type local:SharesViewModel}}, Path=SelectShareCommand}"
+                                    CommandParameter="{Binding .}" />
+                            </StackLayout.GestureRecognizers>
+                        </StackLayout>
+                    </SwipeView>
                 </DataTemplate>
             </CollectionView.ItemTemplate>
             <CollectionView.EmptyView>

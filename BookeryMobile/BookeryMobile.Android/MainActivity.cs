@@ -22,6 +22,9 @@ namespace BookeryMobile.Droid
 
             Platform.Init(this, savedInstanceState);
             Forms.Init(this, savedInstanceState);
+
+            DependencyService.Register<AndroidMessage>();
+
             LoadApplication(new App());
         }
 

@@ -8,10 +8,10 @@ namespace BookeryMobile.Views
     [XamlCompilation(XamlCompilationOptions.Compile)]
     public partial class AlterSharePage : PopupPage
     {
-        public AlterSharePage()
+        public AlterSharePage(BaseViewModel viewModel)
         {
             InitializeComponent();
-            BindingContext = new AddShareViewModel(PopupNavigation.Instance);
+            BindingContext = viewModel;
         }
     }
 }
