@@ -12,9 +12,10 @@ namespace BookeryMobile.ViewModels
 {
     internal class ItemsViewModel : BaseViewModel
     {
-        private readonly Item _item;
         private readonly IItemService _itemService = DependencyService.Get<IItemService>();
+        private readonly IMessage _message = DependencyService.Get<IMessage>();
         private readonly INavigation _navigation;
+        private readonly Item _item;
 
         public ItemsViewModel(INavigation navigation, Item item)
         {
@@ -24,13 +25,15 @@ namespace BookeryMobile.ViewModels
             Items = new ObservableCollection<ItemElement>();
 
             LoadItemsCommand = new Command(LoadItems);
-            SelectItemCommand = new Command<Item>(OnSelectItem);
+            SelectItemCommand = new Command<Item>(SelectItem);
+            DeleteItemCommand = new Command<Item>(DeleteItem);
         }
 
         public ObservableCollection<ItemElement> Items { get; }
 
         public Command LoadItemsCommand { get; }
         public Command<Item> SelectItemCommand { get; }
+        public Command<Item> DeleteItemCommand { get; }
 
         private async void LoadItems()
         {
@@ -52,7 +55,7 @@ namespace BookeryMobile.ViewModels
             IsBusy = false;
         }
 
-        private async void OnSelectItem(Item item)
+        private async void SelectItem(Item item)
         {
             if (item != null)
             {
@@ -76,6 +79,23 @@ namespace BookeryMobile.ViewModels
                         File.WriteAllBytes(localPath, bytes);
                         await Launcher.OpenAsync(new OpenFileRequest("Open with", new ReadOnlyFile(localPath)));
                     }
+                }
+            }
+        }
+
+        private async void DeleteItem(Item item)
+        {
+            if (item != null)
+            {
+                var result = await _itemService.Delete(item.Path);
+
+                if (result)
+                {
+                    OnAppearing();
+                }
+                else
+                {
+                    _message.Short("Can't process the deletion.");
                 }
             }
         }

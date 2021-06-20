@@ -13,19 +13,35 @@
                         SelectionMode="None">
             <CollectionView.ItemTemplate>
                 <DataTemplate>
-                    <StackLayout Padding="10" x:DataType="models:ItemElement" Orientation="Horizontal"
-                                 HeightRequest="28">
-                        <Image Source="{Binding ImageSource}" Aspect="AspectFit"
-                               HorizontalOptions="Center" VerticalOptions="Center" />
-                        <Label Text="{Binding Item.Name}"
-                               FontSize="20" />
-                        <StackLayout.GestureRecognizers>
-                            <TapGestureRecognizer
-                                NumberOfTapsRequired="1"
-                                Command="{Binding Source={RelativeSource AncestorType={x:Type viewModels:ItemsViewModel}}, Path=SelectItemCommand}"
-                                CommandParameter="{Binding Item}" />
-                        </StackLayout.GestureRecognizers>
-                    </StackLayout>
+                    <SwipeView>
+                        <SwipeView.LeftItems>
+                            <SwipeItems SwipeBehaviorOnInvoked="Close">
+                                <!--
+                                <SwipeItemView Command="{Binding Source={x:Reference ItemsListView}, Path=BindingContext.RenameItemCommand}"
+                                               CommandParameter="{Binding Source={RelativeSource Self}, Path=BindingContext}">
+                                    <Image Source="rename.png" Aspect="AspectFit" Margin="5" WidthRequest="40" />
+                                </SwipeItemView>
+                                -->
+                                <SwipeItemView Command="{Binding Source={x:Reference ItemsListView}, Path=BindingContext.DeleteItemCommand}"
+                                               CommandParameter="{Binding Source={RelativeSource Self}, Path=BindingContext.Item}">
+                                    <Image Source="delete.png" Aspect="AspectFit" Margin="5" WidthRequest="40" />
+                                </SwipeItemView>
+                            </SwipeItems>
+                        </SwipeView.LeftItems>
+                        <StackLayout Padding="10" x:DataType="models:ItemElement" Orientation="Horizontal"
+                                     HeightRequest="28">
+                            <Image Source="{Binding ImageSource}" Aspect="AspectFit"
+                                   HorizontalOptions="Center" VerticalOptions="Center" />
+                            <Label Text="{Binding Item.Name}"
+                                   FontSize="20" />
+                            <StackLayout.GestureRecognizers>
+                                <TapGestureRecognizer
+                                    NumberOfTapsRequired="1"
+                                    Command="{Binding Source={RelativeSource AncestorType={x:Type viewModels:ItemsViewModel}}, Path=SelectItemCommand}"
+                                    CommandParameter="{Binding Item}" />
+                            </StackLayout.GestureRecognizers>
+                        </StackLayout>
+                    </SwipeView>
                 </DataTemplate>
             </CollectionView.ItemTemplate>
             <CollectionView.EmptyView>
