@@ -1,5 +1,7 @@
-﻿using System.Collections.ObjectModel;
+﻿using System;
+using System.Collections.ObjectModel;
 using System.IO;
+using System.Net.Http;
 using BookeryApi.Services.Storage;
 using BookeryMobile.Common;
 using BookeryMobile.Models;
@@ -32,6 +34,7 @@ namespace BookeryMobile.ViewModels
             DeleteItemCommand = new Command<Item>(DeleteItem);
             RenameItemCommand = new Command<Item>(OpenRenameItemPopup);
             CreateDirectoryCommand = new Command(OpenCreateDirectoryPopup);
+            UploadFileCommand = new Command(UploadFile);
 
             PopupNavigation.Instance.Popping += (sender, args) =>
             {
@@ -49,6 +52,7 @@ namespace BookeryMobile.ViewModels
         public Command<Item> DeleteItemCommand { get; }
         public Command<Item> RenameItemCommand { get; }
         public Command CreateDirectoryCommand { get; }
+        public Command UploadFileCommand { get; }
 
         private async void LoadItems()
         {
@@ -123,6 +127,41 @@ namespace BookeryMobile.ViewModels
         private void OpenCreateDirectoryPopup()
         {
             PushPopupPage(new AlterItemPage(new CreateDirectoryViewModel(PopupNavigation.Instance, _item)));
+        }
+
+        private async void UploadFile()
+        {
+            try
+            {
+                var result = await FilePicker.PickAsync(new PickOptions
+                {
+                    PickerTitle = "Select file"
+                });
+                if (result != null)
+                {
+                    var fileName = result.FileName;
+                    var stream = await result.OpenReadAsync();
+                    var streamContent = new StreamContent(stream);
+                    var multipartFormDataContent = new MultipartFormDataContent
+                    {
+                        {streamContent, "file", fileName}
+                    };
+                    var item = await _itemService.UploadFile($"{_item.Path}/{fileName}", multipartFormDataContent);
+
+                    if (item is null)
+                    {
+                        _message.Short("File with the same name already exists.");
+                    }
+                }
+            }
+            catch (Exception)
+            {
+                // ignored
+            }
+            finally
+            {
+                OnAppearing();
+            }
         }
 
         public void OnAppearing()

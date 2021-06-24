@@ -9,6 +9,8 @@
     <ContentPage.ToolbarItems>
         <ToolbarItem IconImageSource="createDirectory.png" x:DataType="viewModels:ItemsViewModel"
                      Command="{Binding CreateDirectoryCommand}" />
+        <ToolbarItem IconImageSource="upload.png" x:DataType="viewModels:ItemsViewModel"
+                     Command="{Binding UploadFileCommand}" />
     </ContentPage.ToolbarItems>
     <RefreshView x:DataType="viewModels:ItemsViewModel" Command="{Binding LoadItemsCommand}"
                  IsRefreshing="{Binding IsBusy, Mode=TwoWay}">
