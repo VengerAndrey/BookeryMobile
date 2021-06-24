@@ -5,6 +5,8 @@ using BookeryMobile.Common;
 using BookeryMobile.Models;
 using BookeryMobile.Views;
 using Domain.Models;
+using Rg.Plugins.Popup.Pages;
+using Rg.Plugins.Popup.Services;
 using Xamarin.Essentials;
 using Xamarin.Forms;
 
@@ -16,6 +18,7 @@ namespace BookeryMobile.ViewModels
         private readonly IMessage _message = DependencyService.Get<IMessage>();
         private readonly INavigation _navigation;
         private readonly Item _item;
+        private PopupPage _page;
 
         public ItemsViewModel(INavigation navigation, Item item)
         {
@@ -27,6 +30,15 @@ namespace BookeryMobile.ViewModels
             LoadItemsCommand = new Command(LoadItems);
             SelectItemCommand = new Command<Item>(SelectItem);
             DeleteItemCommand = new Command<Item>(DeleteItem);
+            RenameItemCommand = new Command<Item>(OpenRenameItemPopup);
+
+            PopupNavigation.Instance.Popping += (sender, args) =>
+            {
+                if (PopupNavigation.Instance.PopupStack.Count > 0 && args.Page == _page)
+                {
+                    OnAppearing();
+                }
+            };
         }
 
         public ObservableCollection<ItemElement> Items { get; }
@@ -34,6 +46,7 @@ namespace BookeryMobile.ViewModels
         public Command LoadItemsCommand { get; }
         public Command<Item> SelectItemCommand { get; }
         public Command<Item> DeleteItemCommand { get; }
+        public Command<Item> RenameItemCommand { get; }
 
         private async void LoadItems()
         {
@@ -83,6 +96,11 @@ namespace BookeryMobile.ViewModels
             }
         }
 
+        private void OpenRenameItemPopup(Item item)
+        {
+            PushPopupPage(new AlterItemPage(new RenameItemViewModel(PopupNavigation.Instance, item)));
+        }
+
         private async void DeleteItem(Item item)
         {
             if (item != null)
@@ -103,6 +121,12 @@ namespace BookeryMobile.ViewModels
         public void OnAppearing()
         {
             IsBusy = true;
+        }
+
+        private async void PushPopupPage(PopupPage page)
+        {
+            _page = page;
+            await PopupNavigation.Instance.PushAsync(_page);
         }
     }
 }
