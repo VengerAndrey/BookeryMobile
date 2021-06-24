@@ -4,14 +4,15 @@
              xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
              x:Class="BookeryMobile.Views.SharesPage"
              Title="{Binding Title}"
-             xmlns:local="clr-namespace:BookeryMobile.ViewModels"
+             xmlns:viewModels="clr-namespace:BookeryMobile.ViewModels"
              xmlns:models="clr-namespace:Domain.Models;assembly=Domain"
              x:Name="BrowseItemsPage">
 
     <ContentPage.ToolbarItems>
-        <ToolbarItem IconImageSource="add.png" x:DataType="local:SharesViewModel" Command="{Binding AddShareCommand}" />
+        <ToolbarItem IconImageSource="add.png" x:DataType="viewModels:SharesViewModel"
+                     Command="{Binding AddShareCommand}" />
     </ContentPage.ToolbarItems>
-    <RefreshView x:DataType="local:SharesViewModel" Command="{Binding LoadSharesCommand}"
+    <RefreshView x:DataType="viewModels:SharesViewModel" Command="{Binding LoadSharesCommand}"
                  IsRefreshing="{Binding IsBusy, Mode=TwoWay}">
         <CollectionView x:Name="SharesListView"
                         ItemsSource="{Binding Shares}"
@@ -41,7 +42,7 @@
                             <StackLayout.GestureRecognizers>
                                 <TapGestureRecognizer
                                     NumberOfTapsRequired="1"
-                                    Command="{Binding Source={RelativeSource AncestorType={x:Type local:SharesViewModel}}, Path=SelectShareCommand}"
+                                    Command="{Binding Source={RelativeSource AncestorType={x:Type viewModels:SharesViewModel}}, Path=SelectShareCommand}"
                                     CommandParameter="{Binding .}" />
                             </StackLayout.GestureRecognizers>
                         </StackLayout>

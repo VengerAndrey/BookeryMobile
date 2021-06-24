@@ -5,17 +5,17 @@ using Xamarin.Forms;
 
 namespace BookeryMobile.ViewModels
 {
-    internal class AddShareViewModel : BaseViewModel
+    internal class CreateShareViewModel : BaseViewModel
     {
         private readonly IPopupNavigation _popupNavigation;
         private readonly IShareService _shareService = DependencyService.Get<IShareService>();
 
-        public AddShareViewModel(IPopupNavigation popupNavigation)
+        public CreateShareViewModel(IPopupNavigation popupNavigation)
         {
             _popupNavigation = popupNavigation;
-            Title = "Add new course";
+            Title = "Create course";
             Share = new Share();
-            SubmitCommand = new Command(AddShare, CanAddShare);
+            SubmitCommand = new Command(CreateShare, CanCreateShare);
         }
 
         public Share Share { get; set; }
@@ -33,13 +33,13 @@ namespace BookeryMobile.ViewModels
 
         public Command SubmitCommand { get; }
 
-        private async void AddShare()
+        private async void CreateShare()
         {
             await _shareService.Create(Share.Name);
             await _popupNavigation.PopAsync();
         }
 
-        private bool CanAddShare()
+        private bool CanCreateShare()
         {
             return !string.IsNullOrEmpty(Name);
         }

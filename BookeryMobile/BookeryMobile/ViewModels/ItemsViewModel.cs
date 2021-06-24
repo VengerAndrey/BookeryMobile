@@ -31,6 +31,7 @@ namespace BookeryMobile.ViewModels
             SelectItemCommand = new Command<Item>(SelectItem);
             DeleteItemCommand = new Command<Item>(DeleteItem);
             RenameItemCommand = new Command<Item>(OpenRenameItemPopup);
+            CreateDirectoryCommand = new Command(OpenCreateDirectoryPopup);
 
             PopupNavigation.Instance.Popping += (sender, args) =>
             {
@@ -47,6 +48,7 @@ namespace BookeryMobile.ViewModels
         public Command<Item> SelectItemCommand { get; }
         public Command<Item> DeleteItemCommand { get; }
         public Command<Item> RenameItemCommand { get; }
+        public Command CreateDirectoryCommand { get; }
 
         private async void LoadItems()
         {
@@ -116,6 +118,11 @@ namespace BookeryMobile.ViewModels
                     _message.Short("Can't process the deletion.");
                 }
             }
+        }
+
+        private void OpenCreateDirectoryPopup()
+        {
+            PushPopupPage(new AlterItemPage(new CreateDirectoryViewModel(PopupNavigation.Instance, _item)));
         }
 
         public void OnAppearing()

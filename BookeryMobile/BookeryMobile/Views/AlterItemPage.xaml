@@ -24,9 +24,9 @@
         Padding="20, 20, 20, 20">
         <Frame CornerRadius="10" Padding="20">
             <StackLayout Orientation="Vertical">
-                <Label FontSize="Title" HorizontalOptions="Center"
+                <Label FontSize="24" HorizontalOptions="Center"
                        Text="{Binding Title}" />
-                <Entry Margin="10" Placeholder="Enter item name" FontSize="Large"
+                <Entry Margin="10" Placeholder="Enter name" FontSize="24" WidthRequest="200"
                        Text="{Binding Name, Mode=TwoWay}" />
                 <Button Text="Submit" Command="{Binding SubmitCommand}" CommandParameter="{Binding Item}" />
             </StackLayout>

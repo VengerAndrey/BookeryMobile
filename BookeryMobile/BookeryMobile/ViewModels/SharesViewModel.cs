@@ -91,7 +91,7 @@ namespace BookeryMobile.ViewModels
 
         private void AddShare()
         {
-            PushPopupPage(new AlterSharePage(new AddShareViewModel(PopupNavigation.Instance)));
+            PushPopupPage(new AlterSharePage(new CreateShareViewModel(PopupNavigation.Instance)));
         }
 
         private void OpenRenameSharePopup(Share share)

@@ -35,6 +35,10 @@
                 <Setter Property="TextColor" Value="Black" />
                 <Setter Property="FontSize" Value="20" />
             </Style>
+            <Style TargetType="Entry">
+                <Setter Property="TextColor" Value="Black" />
+                <Setter Property="FontSize" Value="20" />
+            </Style>
         </ResourceDictionary>
     </Application.Resources>
 </Application>
