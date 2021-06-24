@@ -5,7 +5,6 @@ using System.Threading.Tasks;
 using BookeryApi.Exceptions;
 using BookeryApi.Services.Storage;
 using BookeryMobile.Common;
-using BookeryMobile.Services.Authentication;
 using BookeryMobile.Views;
 using Domain.Models;
 using Rg.Plugins.Popup.Pages;
@@ -16,9 +15,9 @@ namespace BookeryMobile.ViewModels
 {
     public class SharesViewModel : BaseViewModel
     {
-        private readonly IShareService _shareService = DependencyService.Get<IShareService>();
-        private readonly INavigation _navigation;
         private readonly IMessage _message = DependencyService.Get<IMessage>();
+        private readonly INavigation _navigation;
+        private readonly IShareService _shareService = DependencyService.Get<IShareService>();
 
         private Share _currentShare;
         private PopupPage _page;

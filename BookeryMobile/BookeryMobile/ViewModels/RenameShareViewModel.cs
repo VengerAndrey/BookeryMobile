@@ -7,11 +7,11 @@ using Xamarin.Forms;
 
 namespace BookeryMobile.ViewModels
 {
-    class RenameShareViewModel : BaseViewModel
+    internal class RenameShareViewModel : BaseViewModel
     {
+        private readonly IMessage _message = DependencyService.Get<IMessage>();
         private readonly IPopupNavigation _popupNavigation;
         private readonly IShareService _shareService = DependencyService.Get<IShareService>();
-        private readonly IMessage _message = DependencyService.Get<IMessage>();
 
         public RenameShareViewModel(IPopupNavigation popupNavigation, Share share)
         {

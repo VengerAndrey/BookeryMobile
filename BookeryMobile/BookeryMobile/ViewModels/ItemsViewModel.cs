@@ -14,10 +14,10 @@ namespace BookeryMobile.ViewModels
 {
     internal class ItemsViewModel : BaseViewModel
     {
+        private readonly Item _item;
         private readonly IItemService _itemService = DependencyService.Get<IItemService>();
         private readonly IMessage _message = DependencyService.Get<IMessage>();
         private readonly INavigation _navigation;
-        private readonly Item _item;
         private PopupPage _page;
 
         public ItemsViewModel(INavigation navigation, Item item)

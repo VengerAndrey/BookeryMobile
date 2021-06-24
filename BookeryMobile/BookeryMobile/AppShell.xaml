@@ -26,6 +26,9 @@
     <ShellItem Route="SignInPage" FlyoutItemIsVisible="False">
         <ShellContent ContentTemplate="{DataTemplate TypeName=views:SignInPage}" />
     </ShellItem>
+    <ShellItem Route="SignUpPage" FlyoutItemIsVisible="False">
+        <ShellContent ContentTemplate="{DataTemplate TypeName=views:SignUpPage}" />
+    </ShellItem>
 
     <TabBar>
         <ShellContent Title="Courses" Icon="folder.png" Route="SharesPage"

@@ -29,8 +29,11 @@
                 <Entry Grid.Column="1" Placeholder="Enter your password" FontSize="24"
                        Text="{Binding Password, Mode=TwoWay}" />
             </Grid>
-            <Button HorizontalOptions="Center" Text="Log in" Margin="0, 20, 0, 20"
+            <Button HorizontalOptions="Center" Text="Sign in" Margin="0, 20, 0, 20"
                     Command="{Binding SignInCommand}" />
+            <Button HorizontalOptions="Center" Text="Sign up"
+                    FontSize="18" Background="Transparent" TextColor="Blue"
+                    Command="{Binding ViewSignUpCommand}" />
         </StackLayout>
     </ContentPage.Content>
 </ContentPage>

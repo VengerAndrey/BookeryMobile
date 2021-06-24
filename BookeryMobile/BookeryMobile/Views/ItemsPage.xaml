@@ -16,12 +16,14 @@
                     <SwipeView>
                         <SwipeView.LeftItems>
                             <SwipeItems SwipeBehaviorOnInvoked="Close">
-                                <SwipeItemView Command="{Binding Source={x:Reference ItemsListView}, Path=BindingContext.RenameItemCommand}"
-                                               CommandParameter="{Binding Source={RelativeSource Self}, Path=BindingContext.Item}">
+                                <SwipeItemView
+                                    Command="{Binding Source={x:Reference ItemsListView}, Path=BindingContext.RenameItemCommand}"
+                                    CommandParameter="{Binding Source={RelativeSource Self}, Path=BindingContext.Item}">
                                     <Image Source="rename.png" Aspect="AspectFit" Margin="5" WidthRequest="40" />
                                 </SwipeItemView>
-                                <SwipeItemView Command="{Binding Source={x:Reference ItemsListView}, Path=BindingContext.DeleteItemCommand}"
-                                               CommandParameter="{Binding Source={RelativeSource Self}, Path=BindingContext.Item}">
+                                <SwipeItemView
+                                    Command="{Binding Source={x:Reference ItemsListView}, Path=BindingContext.DeleteItemCommand}"
+                                    CommandParameter="{Binding Source={RelativeSource Self}, Path=BindingContext.Item}">
                                     <Image Source="delete.png" Aspect="AspectFit" Margin="5" WidthRequest="40" />
                                 </SwipeItemView>
                             </SwipeItems>

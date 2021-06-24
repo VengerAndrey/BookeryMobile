@@ -1,4 +1,5 @@
 ﻿using BookeryApi.Exceptions;
+using BookeryMobile.Common;
 using BookeryMobile.Services.Authentication;
 using BookeryMobile.Views;
 using Xamarin.Forms;
@@ -8,12 +9,15 @@ namespace BookeryMobile.ViewModels
     public class SignInViewModel : BaseViewModel
     {
         private readonly IAuthenticator _authenticator = DependencyService.Get<IAuthenticator>();
+        private readonly IMessage _message = DependencyService.Get<IMessage>();
+
         private string _email = "email@gmail.com";
         private string _password = "123";
 
         public SignInViewModel()
         {
             SignInCommand = new Command(OnSignIn, CanSignIn);
+            ViewSignUpCommand = new Command(ViewSignUp);
             _authenticator.StateChanged += async () =>
             {
                 if (_authenticator.IsSignedIn)
@@ -28,6 +32,7 @@ namespace BookeryMobile.ViewModels
         }
 
         public Command SignInCommand { get; }
+        public Command ViewSignUpCommand { get; }
 
         public string Email
         {
@@ -63,13 +68,18 @@ namespace BookeryMobile.ViewModels
             }
             catch (InvalidCredentialException e)
             {
-                Email = "WRONG";
+                _message.Short(e.Message);
             }
         }
 
         private bool CanSignIn()
         {
             return !string.IsNullOrEmpty(Email) && !string.IsNullOrEmpty(Password);
+        }
+
+        private async void ViewSignUp()
+        {
+            await Shell.Current.GoToAsync($"//{nameof(SignUpPage)}");
         }
     }
 }

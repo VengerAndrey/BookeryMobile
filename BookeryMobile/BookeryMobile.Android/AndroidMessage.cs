@@ -1,9 +1,11 @@
-﻿using Android.App;
-using Android.Widget;
+﻿using Android.Widget;
 using BookeryMobile.Common;
 using BookeryMobile.Droid;
+using Xamarin.Forms;
+using Application = Android.App.Application;
 
-[assembly: Xamarin.Forms.Dependency(typeof(AndroidMessage))]
+[assembly: Dependency(typeof(AndroidMessage))]
+
 namespace BookeryMobile.Droid
 {
     public class AndroidMessage : IMessage

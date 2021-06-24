@@ -7,20 +7,19 @@ using Xamarin.Forms;
 
 namespace BookeryMobile.ViewModels
 {
-    class RenameItemViewModel : BaseViewModel
+    internal class RenameItemViewModel : BaseViewModel
     {
-        private readonly IPopupNavigation _popupNavigation;
+        private readonly string _extension;
         private readonly IItemService _itemService = DependencyService.Get<IItemService>();
         private readonly IMessage _message = DependencyService.Get<IMessage>();
-
-        private readonly string _extension;
+        private readonly IPopupNavigation _popupNavigation;
 
         public RenameItemViewModel(IPopupNavigation popupNavigation, Item item)
         {
             _popupNavigation = popupNavigation;
             Title = "Rename item";
             Item = item;
-            _extension = (item.IsDirectory) ? "" : item.Name.Substring(item.Name.LastIndexOf('.'));
+            _extension = item.IsDirectory ? "" : item.Name.Substring(item.Name.LastIndexOf('.'));
             SubmitCommand = new Command(RenameItem, CanRenameItem);
         }
 
@@ -28,7 +27,7 @@ namespace BookeryMobile.ViewModels
 
         public string Name
         {
-            get => (Item.IsDirectory) ? Item.Name : Item.Name.Substring(0, Item.Name.LastIndexOf('.'));
+            get => Item.IsDirectory ? Item.Name : Item.Name.Substring(0, Item.Name.LastIndexOf('.'));
             set
             {
                 Item.Name = value + _extension;
@@ -68,4 +67,3 @@ namespace BookeryMobile.ViewModels
         }
     }
 }
-
