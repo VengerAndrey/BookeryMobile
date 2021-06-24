@@ -78,6 +78,8 @@ namespace BookeryMobile.ViewModels
         {
             if (item != null)
             {
+                await PopupNavigation.Instance.PushAsync(new LoadingPage());
+
                 if (item.IsDirectory)
                 {
                     await _navigation.PushAsync(new ItemsPage(item));
@@ -99,6 +101,8 @@ namespace BookeryMobile.ViewModels
                         await Launcher.OpenAsync(new OpenFileRequest("Open with", new ReadOnlyFile(localPath)));
                     }
                 }
+
+                PopPopupPage();
             }
         }
 
@@ -139,6 +143,8 @@ namespace BookeryMobile.ViewModels
                 });
                 if (result != null)
                 {
+                    PushPopupPage(new LoadingPage());
+
                     var fileName = result.FileName;
                     var stream = await result.OpenReadAsync();
                     var streamContent = new StreamContent(stream);
@@ -160,7 +166,7 @@ namespace BookeryMobile.ViewModels
             }
             finally
             {
-                OnAppearing();
+                PopPopupPage();
             }
         }
 
@@ -173,6 +179,14 @@ namespace BookeryMobile.ViewModels
         {
             _page = page;
             await PopupNavigation.Instance.PushAsync(_page);
+        }
+
+        private async void PopPopupPage()
+        {
+            if (PopupNavigation.Instance.PopupStack.Count > 0)
+            {
+                await PopupNavigation.Instance.PopAsync();
+            }
         }
     }
 }
