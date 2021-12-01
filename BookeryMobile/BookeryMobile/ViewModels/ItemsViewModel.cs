@@ -78,31 +78,14 @@ namespace BookeryMobile.ViewModels
         {
             if (item != null)
             {
-                await PopupNavigation.Instance.PushAsync(new LoadingPage());
-
                 if (item.IsDirectory)
                 {
                     await _navigation.PushAsync(new ItemsPage(item));
                 }
                 else
                 {
-                    var content = await _itemService.DownloadFile(item.Path);
-                    if (content != null)
-                    {
-                        byte[] bytes;
-                        using (var memoryStream = new MemoryStream())
-                        {
-                            await content.CopyToAsync(memoryStream);
-                            bytes = memoryStream.ToArray();
-                        }
-
-                        var localPath = Path.Combine(Path.GetTempPath(), item.Name);
-                        File.WriteAllBytes(localPath, bytes);
-                        await Launcher.OpenAsync(new OpenFileRequest("Open with", new ReadOnlyFile(localPath)));
-                    }
+                    await PopupNavigation.Instance.PushAsync(new FileActionsPage(new FileActionsViewModel(item)));
                 }
-
-                PopPopupPage();
             }
         }
 
