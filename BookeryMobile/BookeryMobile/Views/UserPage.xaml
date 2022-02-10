@@ -35,6 +35,11 @@
                 <Image Source="{Binding ProfileImageSource, Mode=TwoWay}"
                        HorizontalOptions="Center"
                        VerticalOptions="Center" />
+                <Frame.GestureRecognizers>
+                    <TapGestureRecognizer
+                        NumberOfTapsRequired="1"
+                        Command="{Binding Source={RelativeSource AncestorType={x:Type vm:UserViewModel}}, Path=UploadProfileImageCommand}" />
+                </Frame.GestureRecognizers>
             </Frame>
         </StackLayout>
         <StackLayout Grid.Row="1" Orientation="Horizontal" Margin="15" HorizontalOptions="Center">
