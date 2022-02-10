@@ -44,6 +44,7 @@ namespace BookeryMobile.ViewModels
             RenameNodeCommand = new Command<Node>(OpenRenameNodePopup);
             CreateDirectoryCommand = new Command(OpenCreateDirectoryPopup);
             UploadFileCommand = new Command(UploadFile);
+            ShareNodeCommand = new Command<Node>(OpenShareNodePopup);
 
             PopupNavigation.Instance.Popping += (sender, args) =>
             {
@@ -62,6 +63,7 @@ namespace BookeryMobile.ViewModels
         public Command<Node> RenameNodeCommand { get; }
         public Command CreateDirectoryCommand { get; }
         public Command UploadFileCommand { get; }
+        public Command<Node> ShareNodeCommand { get; }
 
         private async void LoadNodes()
         {
@@ -123,6 +125,11 @@ namespace BookeryMobile.ViewModels
         private void OpenCreateDirectoryPopup()
         {
             PushPopupPage(new AlterItemPage(new CreateDirectoryViewModel(PopupNavigation.Instance, _nodeService, _path)));
+        }
+        
+        private void OpenShareNodePopup(Node node)
+        {
+            PushPopupPage(new ShareNodePage(new ShareNodeViewModel(PopupNavigation.Instance, node)));
         }
 
         private async void UploadFile()

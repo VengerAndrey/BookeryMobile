@@ -32,6 +32,11 @@
                                     CommandParameter="{Binding Source={RelativeSource Self}, Path=BindingContext.Node}">
                                     <Image Source="delete.png" Aspect="AspectFit" Margin="5" WidthRequest="40" />
                                 </SwipeItemView>
+                                <SwipeItemView
+                                    Command="{Binding Source={x:Reference ItemsListView}, Path=BindingContext.ShareNodeCommand}"
+                                    CommandParameter="{Binding Source={RelativeSource Self}, Path=BindingContext.Node}">
+                                    <Image Source="share.png" Aspect="AspectFit" Margin="5" WidthRequest="40" />
+                                </SwipeItemView>
                             </SwipeItems>
                         </SwipeView.LeftItems>
                         <StackLayout Padding="10" x:DataType="models:NodeElement" Orientation="Horizontal"

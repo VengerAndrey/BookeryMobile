@@ -6,5 +6,6 @@ namespace BookeryApi.Services.User
     public interface IUserService : IBaseService
     {
         Task<Domain.Models.User> Get();
+        Task<Domain.Models.User> GetByEmail(string email);
     }
 }

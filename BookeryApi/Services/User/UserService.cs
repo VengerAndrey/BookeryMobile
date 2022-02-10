@@ -25,5 +25,17 @@ namespace BookeryApi.Services.User
 
             throw new DataNotFoundException("User");
         }
+
+        public async Task<Domain.Models.User> GetByEmail(string email)
+        {
+            var response = await _httpClient.GetAsync(email);
+
+            if (response.IsSuccessStatusCode)
+            {
+                return await response.Content.ReadAsAsync<Domain.Models.User>();
+            }
+
+            throw new DataNotFoundException("User");
+        }
     }
 }
