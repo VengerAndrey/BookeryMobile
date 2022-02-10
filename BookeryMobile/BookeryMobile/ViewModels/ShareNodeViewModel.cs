@@ -1,4 +1,7 @@
-﻿using BookeryApi.Exceptions;
+﻿using System.Collections.Generic;
+using System.Collections.ObjectModel;
+using System.Linq;
+using BookeryApi.Exceptions;
 using BookeryApi.Services.Node;
 using BookeryApi.Services.User;
 using BookeryMobile.Common;
@@ -22,7 +25,10 @@ namespace BookeryMobile.ViewModels
             _popupNavigation = popupNavigation;
             Title = "Share item";
             Node = node;
+            Sharing = new ObservableCollection<User>();
             SubmitCommand = new Command(ShareNode, CanShareNode);
+            HideNodeCommand = new Command<User>(HideNode);
+            LoadSharing();
         }
         
         public Node Node { get; set; }
@@ -43,7 +49,10 @@ namespace BookeryMobile.ViewModels
             set => SetProperty(ref _isWriteAccess, value);
         }
         
+        public ObservableCollection<User> Sharing { get; }
+
         public Command SubmitCommand { get; }
+        public Command<User> HideNodeCommand { get; }
         
         private async void ShareNode()
         {
@@ -86,6 +95,25 @@ namespace BookeryMobile.ViewModels
         private bool CanShareNode()
         {
             return !string.IsNullOrEmpty(UserEmail);
+        }
+
+        private async void LoadSharing()
+        {
+            var sharing = await _sharedNodeService.GetSharing(Node.Id);
+            foreach (var userNode in sharing)
+            {
+                Sharing.Add(await _userService.GetById(userNode.UserId));
+            }
+        }
+
+        private async void HideNode(User user)
+        {
+            await _sharedNodeService.Hide(new UserNode
+            {
+                NodeId = Node.Id,
+                UserId = user.Id
+            });
+            await _popupNavigation.PopAsync();
         }
     }
 }
