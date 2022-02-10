@@ -1,6 +1,8 @@
 ﻿using System.Collections.Generic;
+using System.Net;
 using System.Net.Http;
 using System.Threading.Tasks;
+using BookeryApi.Exceptions;
 using BookeryApi.Services.Common;
 
 namespace BookeryApi.Services.Node
@@ -32,6 +34,11 @@ namespace BookeryApi.Services.Node
             {
                 var node = await response.Content.ReadAsAsync<Domain.Models.Node>();
                 return node;
+            }
+
+            if (response.StatusCode == HttpStatusCode.Conflict)
+            {
+                throw new NameConflictException();
             }
 
             return null;

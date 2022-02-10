@@ -52,6 +52,10 @@ namespace BookeryMobile.ViewModels
             {
                 _message.Short(e.Message);
             }
+            catch (WrongAccessTypeException e)
+            {
+                _message.Short(e.Message);
+            }
             finally
             {
                 await _popupNavigation.PopAsync();

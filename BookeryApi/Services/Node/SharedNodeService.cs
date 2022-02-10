@@ -1,8 +1,10 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.IO;
+using System.Net;
 using System.Net.Http;
 using System.Threading.Tasks;
+using BookeryApi.Exceptions;
 using BookeryApi.Services.Common;
 using Domain.Models;
 
@@ -50,6 +52,10 @@ namespace BookeryApi.Services.Node
                 var node = await response.Content.ReadAsAsync<Domain.Models.Node>();
                 return node;
             }
+            if (response.StatusCode == HttpStatusCode.Conflict)
+            {
+                throw new NameConflictException();
+            }
 
             return null;
         }
@@ -62,6 +68,11 @@ namespace BookeryApi.Services.Node
             {
                 var newPath = await response.Content.ReadAsStringAsync();
                 return newPath;
+            }
+
+            if (response.StatusCode == HttpStatusCode.Forbidden)
+            {
+                throw new WrongAccessTypeException();
             }
 
             return null;

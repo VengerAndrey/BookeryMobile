@@ -72,10 +72,10 @@ namespace BookeryMobile.ViewModels
                     UserId = user.Id,
                     AccessTypeId = IsWriteAccess ? AccessTypeId.Write : AccessTypeId.Read
                 });
-                
-                if (!result)
+
+                if (result)
                 {
-                    throw new ForbiddenException();
+                    _message.Short("Shared successfully.");
                 }
             }
             catch (ForbiddenException e)
@@ -108,11 +108,17 @@ namespace BookeryMobile.ViewModels
 
         private async void HideNode(User user)
         {
-            await _sharedNodeService.Hide(new UserNode
+            var result = await _sharedNodeService.Hide(new UserNode
             {
                 NodeId = Node.Id,
                 UserId = user.Id
             });
+            
+            if (result)
+            {
+                _message.Short("Hidden successfully.");
+            }
+            
             await _popupNavigation.PopAsync();
         }
     }

@@ -1,4 +1,6 @@
-﻿using BookeryApi.Services.Node;
+﻿using System;
+using BookeryApi.Exceptions;
+using BookeryApi.Services.Node;
 using BookeryApi.Services.Storage;
 using BookeryMobile.Common;
 using Domain.Models;
@@ -38,15 +40,17 @@ namespace BookeryMobile.ViewModels
 
         private async void CreateDirectory()
         {
-            var result = await _nodeService.Create(_path, new Node()
+            try
             {
-                IsDirectory = true,
-                Name = Name
-            });
-
-            if (result is null)
+                await _nodeService.Create(_path, new Node()
+                {
+                    IsDirectory = true,
+                    Name = Name
+                });
+            }
+            catch (NameConflictException e)
             {
-                _message.Short("Folder with the same name already exists.");
+                _message.Short(e.Message);
             }
 
             await _popupNavigation.PopAsync();
