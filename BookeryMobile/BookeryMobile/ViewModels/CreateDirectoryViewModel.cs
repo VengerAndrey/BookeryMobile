@@ -1,4 +1,5 @@
-﻿using BookeryApi.Services.Storage;
+﻿using BookeryApi.Services.Node;
+using BookeryApi.Services.Storage;
 using BookeryMobile.Common;
 using Domain.Models;
 using Rg.Plugins.Popup.Contracts;
@@ -8,20 +9,20 @@ namespace BookeryMobile.ViewModels
 {
     internal class CreateDirectoryViewModel : BaseViewModel
     {
-        private readonly IItemService _itemService = DependencyService.Get<IItemService>();
+        private readonly INodeCreateService _nodeService;
         private readonly IMessage _message = DependencyService.Get<IMessage>();
         private readonly IPopupNavigation _popupNavigation;
         private string _name;
+        private readonly string _path;
 
-        public CreateDirectoryViewModel(IPopupNavigation popupNavigation, Item item)
+        public CreateDirectoryViewModel(IPopupNavigation popupNavigation, INodeCreateService nodeService, string path)
         {
             _popupNavigation = popupNavigation;
+            _nodeService = nodeService;
             Title = "Create folder";
-            Item = item;
+            _path = path;
             SubmitCommand = new Command(CreateDirectory, CanCreateDirectory);
         }
-
-        public Item Item { get; set; }
 
         public string Name
         {
@@ -37,7 +38,11 @@ namespace BookeryMobile.ViewModels
 
         private async void CreateDirectory()
         {
-            var result = await _itemService.CreateDirectory($"{Item.Path}/{_name}");
+            var result = await _nodeService.Create(_path, new Node()
+            {
+                IsDirectory = true,
+                Name = Name
+            });
 
             if (result is null)
             {

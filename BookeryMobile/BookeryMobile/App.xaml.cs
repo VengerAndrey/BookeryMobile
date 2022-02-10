@@ -1,7 +1,9 @@
-﻿using BookeryApi.Services.Storage;
-using BookeryApi.Services.Token;
+﻿using BookeryApi.Services.Authentication;
+using BookeryApi.Services.Node;
+using BookeryApi.Services.Storage;
 using BookeryApi.Services.User;
 using BookeryMobile.Services.Authentication;
+using BookeryMobile.Services.Cache;
 using Xamarin.Forms;
 
 namespace BookeryMobile
@@ -13,11 +15,11 @@ namespace BookeryMobile
             InitializeComponent();
 
             DependencyService.Register<AuthenticationService>();
-            DependencyService.Register<ShareService>();
-            DependencyService.Register<ItemService>();
+            DependencyService.Register<PrivateNodeService>();
+            DependencyService.Register<SharedNodeService>();
+            DependencyService.Register<StorageService>();
             DependencyService.Register<UserService>();
-            DependencyService.Register<AccessService>();
-            DependencyService.Register<PhotoService>();
+            DependencyService.Register<Cache>();
             DependencyService.Register<Authenticator>();
             MainPage = new AppShell();
         }

@@ -1,8 +1,9 @@
 ﻿using System;
 using System.Threading;
 using System.Threading.Tasks;
+using BookeryApi.Services.Authentication;
+using BookeryApi.Services.Node;
 using BookeryApi.Services.Storage;
-using BookeryApi.Services.Token;
 using BookeryApi.Services.User;
 using Domain.Models.DTOs.Requests;
 using Domain.Models.DTOs.Responses;
@@ -12,14 +13,11 @@ namespace BookeryMobile.Services.Authentication
 {
     internal class Authenticator : IAuthenticator
     {
-        private readonly IAccessService _accessService = DependencyService.Get<IAccessService>();
-
         private readonly IAuthenticationService
             _authenticationService = DependencyService.Get<IAuthenticationService>();
-
-        private readonly IItemService _itemService = DependencyService.Get<IItemService>();
-        private readonly IPhotoService _photoService = DependencyService.Get<IPhotoService>();
-        private readonly IShareService _shareService = DependencyService.Get<IShareService>();
+        private readonly IPrivateNodeService _privateNodeService = DependencyService.Get<IPrivateNodeService>();
+        private readonly ISharedNodeService _sharedNodeService = DependencyService.Get<ISharedNodeService>();
+        private readonly IStorageService _storageService = DependencyService.Get<IStorageService>();
         private readonly IUserService _userService = DependencyService.Get<IUserService>();
 
         private AuthenticationResponse _currentAuthenticationResponse;
@@ -37,9 +35,15 @@ namespace BookeryMobile.Services.Authentication
             StateChanged?.Invoke();
         }
 
-        public async Task<SignUpResult> SignUp(string email, string username, string password)
+        public async Task<SignUpResult> SignUp(string email, string lastName, string firstName, string password)
         {
-            return await _authenticationService.SignUp(email, username, password);
+            return await _authenticationService.SignUp(new SignUpRequest()
+            {
+                Email = email,
+                LastName = lastName,
+                FirstName = firstName,
+                Password = password
+            });
         }
 
         public void SignOut()
@@ -65,12 +69,14 @@ namespace BookeryMobile.Services.Authentication
 
         private void SetBearerTokenToServices()
         {
-            _shareService.SetBearerToken(_currentAuthenticationResponse.AccessToken);
-            _itemService.SetBearerToken(_currentAuthenticationResponse.AccessToken);
-            _shareService.SetBearerToken(_currentAuthenticationResponse.AccessToken);
+            if (_currentAuthenticationResponse == null)
+            {
+                return;
+            }
+            _privateNodeService.SetBearerToken(_currentAuthenticationResponse.AccessToken);
+            _storageService.SetBearerToken(_currentAuthenticationResponse.AccessToken);
             _userService.SetBearerToken(_currentAuthenticationResponse.AccessToken);
-            _accessService.SetBearerToken(_currentAuthenticationResponse.AccessToken);
-            _photoService.SetBearerToken(_currentAuthenticationResponse.AccessToken);
+            _sharedNodeService.SetBearerToken(_currentAuthenticationResponse.AccessToken);
         }
     }
 }

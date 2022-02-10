@@ -1,0 +1,58 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+
+<ContentPage xmlns="http://xamarin.com/schemas/2014/forms"
+             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             xmlns:viewModels="clr-namespace:BookeryMobile.ViewModels;assembly=BookeryMobile"
+             xmlns:models="clr-namespace:BookeryMobile.Models;assembly=BookeryMobile"
+             x:Class="BookeryMobile.Views.SharedNodesPage"
+             Title="{Binding Title}">
+    <ContentPage.ToolbarItems>
+        <ToolbarItem IconImageSource="createDirectory.png" x:DataType="viewModels:SharedNodesViewModel"
+                     Command="{Binding CreateDirectoryCommand}" />
+        <ToolbarItem IconImageSource="upload.png" x:DataType="viewModels:SharedNodesViewModel"
+                     Command="{Binding UploadFileCommand}" />
+    </ContentPage.ToolbarItems>
+    <RefreshView x:DataType="viewModels:SharedNodesViewModel" Command="{Binding LoadNodesCommand}"
+                 IsRefreshing="{Binding IsBusy, Mode=TwoWay}">
+        <CollectionView x:Name="ItemsListView"
+                        ItemsSource="{Binding Nodes}"
+                        SelectionMode="None">
+            <CollectionView.ItemTemplate>
+                <DataTemplate>
+                    <SwipeView>
+                        <SwipeView.LeftItems>
+                            <SwipeItems SwipeBehaviorOnInvoked="Close">
+                                <SwipeItemView
+                                    Command="{Binding Source={x:Reference ItemsListView}, Path=BindingContext.RenameNodeCommand}"
+                                    CommandParameter="{Binding Source={RelativeSource Self}, Path=BindingContext.Node}">
+                                    <Image Source="rename.png" Aspect="AspectFit" Margin="5" WidthRequest="40" />
+                                </SwipeItemView>
+                            </SwipeItems>
+                        </SwipeView.LeftItems>
+                        <StackLayout Padding="10" x:DataType="models:NodeElement" Orientation="Horizontal"
+                                     HeightRequest="28">
+                            <Image Source="{Binding ImageSource}" Aspect="AspectFit"
+                                   HorizontalOptions="Center" VerticalOptions="Center" />
+                            <Label Text="{Binding Node.Name}"
+                                   FontSize="20" />
+                            <StackLayout.GestureRecognizers>
+                                <TapGestureRecognizer
+                                    NumberOfTapsRequired="1"
+                                    Command="{Binding Source={RelativeSource AncestorType={x:Type viewModels:SharedNodesViewModel}}, Path=SelectNodeCommand}"
+                                    CommandParameter="{Binding Node}" />
+                            </StackLayout.GestureRecognizers>
+                        </StackLayout>
+                    </SwipeView>
+                </DataTemplate>
+            </CollectionView.ItemTemplate>
+            <CollectionView.EmptyView>
+                <ContentView>
+                    <StackLayout Padding="50" HorizontalOptions="Center" VerticalOptions="Center">
+                        <Image Source="noFiles.png" HeightRequest="100" />
+                        <Label Text="It looks like it's empty here." FontSize="Large" Margin="10" />
+                    </StackLayout>
+                </ContentView>
+            </CollectionView.EmptyView>
+        </CollectionView>
+    </RefreshView>
+</ContentPage>

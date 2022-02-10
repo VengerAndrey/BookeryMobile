@@ -1,4 +1,5 @@
 ﻿using BookeryApi.Exceptions;
+using BookeryApi.Services.Node;
 using BookeryMobile.Common;
 using BookeryMobile.Services.Authentication;
 using BookeryMobile.Views;
@@ -9,9 +10,10 @@ namespace BookeryMobile.ViewModels
     public class SignInViewModel : BaseViewModel
     {
         private readonly IAuthenticator _authenticator = DependencyService.Get<IAuthenticator>();
+        private readonly IPrivateNodeService _privateNodeService = DependencyService.Get<IPrivateNodeService>();
         private readonly IMessage _message = DependencyService.Get<IMessage>();
 
-        private string _email = "email@gmail.com";
+        private string _email = "user@gmail.com";
         private string _password = "123";
 
         public SignInViewModel()
@@ -22,7 +24,7 @@ namespace BookeryMobile.ViewModels
             {
                 if (_authenticator.IsSignedIn)
                 {
-                    await Shell.Current.GoToAsync($"//{nameof(SharesPage)}");
+                    await Shell.Current.GoToAsync($"//{nameof(PrivateNodesPage)}");
                 }
                 else
                 {

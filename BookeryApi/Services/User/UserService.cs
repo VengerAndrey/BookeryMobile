@@ -3,17 +3,15 @@ using System.Net.Http;
 using System.Net.Http.Headers;
 using System.Threading.Tasks;
 using BookeryApi.Exceptions;
+using BookeryApi.Services.Common;
 
 namespace BookeryApi.Services.User
 {
-    public class UserService : IUserService
+    public class UserService : BaseService, IUserService
     {
-        private readonly HttpClient _httpClient;
-
-        public UserService()
+        public UserService() : base("User")
         {
-            _httpClient = new HttpClient();
-            _httpClient.BaseAddress = new Uri("http://10.0.2.2:42396/api/User/");
+            
         }
 
         public async Task<Domain.Models.User> Get()
@@ -26,11 +24,6 @@ namespace BookeryApi.Services.User
             }
 
             throw new DataNotFoundException("User");
-        }
-
-        public void SetBearerToken(string accessToken)
-        {
-            _httpClient.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("Bearer", accessToken);
         }
     }
 }

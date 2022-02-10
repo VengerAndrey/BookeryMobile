@@ -11,7 +11,7 @@ namespace BookeryMobile.Services.Authentication
         event Action StateChanged;
 
         Task SignIn(string email, string password);
-        Task<SignUpResult> SignUp(string email, string username, string password);
+        Task<SignUpResult> SignUp(string email, string lastName, string firstName, string password);
 
         void SignOut();
     }

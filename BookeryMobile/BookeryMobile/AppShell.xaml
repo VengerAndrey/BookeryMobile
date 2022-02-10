@@ -31,8 +31,10 @@
     </ShellItem>
 
     <TabBar>
-        <ShellContent Title="Courses" Icon="folder.png" Route="SharesPage"
-                      ContentTemplate="{DataTemplate TypeName=views:SharesPage}" />
+        <ShellContent Title="Shared" Icon="folder.png" Route="SharedNodesPage"
+                      ContentTemplate="{DataTemplate TypeName=views:SharedNodesPage}" />
+        <ShellContent Title="Private" Icon="lock.png" Route="PrivateNodesPage"
+                      ContentTemplate="{DataTemplate TypeName=views:PrivateNodesPage}" />
         <ShellContent Title="User" Icon="user.png" Route="UserPage"
                       ContentTemplate="{DataTemplate TypeName=views:UserPage}" />
     </TabBar>

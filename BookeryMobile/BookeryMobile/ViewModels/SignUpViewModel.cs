@@ -15,7 +15,8 @@ namespace BookeryMobile.ViewModels
 
         private string _email = "mobile@gmail.com";
         private string _password = "123";
-        private string _username = "mobile_user";
+        private string _firstName = "first";
+        private string _lastName = "second";
 
         public SignUpViewModel()
         {
@@ -36,12 +37,22 @@ namespace BookeryMobile.ViewModels
             }
         }
 
-        public string Username
+        public string FirstName
         {
-            get => _username;
+            get => _firstName;
             set
             {
-                SetProperty(ref _username, value);
+                SetProperty(ref _firstName, value);
+                SignUpCommand.ChangeCanExecute();
+            }
+        }
+
+        public string LastName
+        {
+            get => _lastName;
+            set
+            {
+                SetProperty(ref _lastName, value);
                 SignUpCommand.ChangeCanExecute();
             }
         }
@@ -69,14 +80,14 @@ namespace BookeryMobile.ViewModels
         public void OnAppearing()
         {
             Email = string.Empty;
-            Username = string.Empty;
+            FirstName = string.Empty;
             Password = string.Empty;
             ConfirmPassword = string.Empty;
         }
 
         private async void SignUp()
         {
-            var signUpResult = await _authenticator.SignUp(Email, Username, Password);
+            var signUpResult = await _authenticator.SignUp(Email, LastName, FirstName, Password);
 
             switch (signUpResult)
             {
@@ -97,7 +108,7 @@ namespace BookeryMobile.ViewModels
         private bool CanSignUp()
         {
             return !string.IsNullOrEmpty(Email) &&
-                   !string.IsNullOrEmpty(Username) &&
+                   !string.IsNullOrEmpty(FirstName) &&
                    !string.IsNullOrEmpty(Password) &&
                    !string.IsNullOrEmpty(ConfirmPassword) &&
                    Password == ConfirmPassword;
