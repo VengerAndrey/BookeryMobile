@@ -5,9 +5,9 @@ using Xamarin.Forms.Xaml;
 namespace BookeryMobile.Views
 {
     [XamlCompilation(XamlCompilationOptions.Compile)]
-    public partial class AlterItemPage : PopupPage
+    public partial class AlterNodePage : PopupPage
     {
-        public AlterItemPage(BaseViewModel viewModel)
+        public AlterNodePage(BaseViewModel viewModel)
         {
             InitializeComponent();
             BindingContext = viewModel;

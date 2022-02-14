@@ -9,7 +9,7 @@ using Platform = Xamarin.Essentials.Platform;
 
 namespace BookeryMobile.Droid
 {
-    [Activity(Label = "BookeryMobile", Icon = "@mipmap/icon", Theme = "@style/MainTheme", MainLauncher = true,
+    [Activity(Label = "Bookery", Icon = "@mipmap/icon", Theme = "@style/MainTheme", MainLauncher = true,
         ConfigurationChanges = ConfigChanges.ScreenSize | ConfigChanges.Orientation | ConfigChanges.UiMode |
                                ConfigChanges.ScreenLayout | ConfigChanges.SmallestScreenSize)]
     public class MainActivity : FormsAppCompatActivity
@@ -22,6 +22,7 @@ namespace BookeryMobile.Droid
 
             Platform.Init(this, savedInstanceState);
             Forms.Init(this, savedInstanceState);
+            FormsMaterial.Init(this, savedInstanceState);
 
             DependencyService.Register<AndroidMessage>();
 

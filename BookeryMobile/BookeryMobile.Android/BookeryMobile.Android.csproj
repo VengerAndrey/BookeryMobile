@@ -59,6 +59,7 @@
     </PackageReference>
     <PackageReference Include="Xamarin.Forms" Version="5.0.0.2012" />
     <PackageReference Include="Xamarin.Essentials" Version="1.6.1" />
+    <PackageReference Include="Xamarin.Forms.Visual.Material" Version="5.0.0.2083" />
   </ItemGroup>
   <ItemGroup>
     <Compile Include="AndroidMessage.cs" />
@@ -72,7 +73,27 @@
     <None Include="Properties\AndroidManifest.xml" />
   </ItemGroup>
   <ItemGroup>
+    <AndroidResource Include="Resources\drawable\arrows_expand.png" />
+    <AndroidResource Include="Resources\drawable\cloud.png" />
+    <AndroidResource Include="Resources\drawable\document_download.png" />
+    <AndroidResource Include="Resources\drawable\document_search.png" />
+    <AndroidResource Include="Resources\drawable\document.png" />
+    <AndroidResource Include="Resources\drawable\edit.png" />
+    <AndroidResource Include="Resources\drawable\folder_add.png" />
     <AndroidResource Include="Resources\drawable\lock.png" />
+    <AndroidResource Include="Resources\drawable\logo.png" />
+    <AndroidResource Include="Resources\drawable\logout.png" />
+    <AndroidResource Include="Resources\drawable\people.png" />
+    <AndroidResource Include="Resources\mipmap-hdpi\icon_adaptive_back.png" />
+    <AndroidResource Include="Resources\mipmap-hdpi\icon_adaptive_fore.png" />
+    <AndroidResource Include="Resources\mipmap-mdpi\icon_adaptive_back.png" />
+    <AndroidResource Include="Resources\mipmap-mdpi\icon_adaptive_fore.png" />
+    <AndroidResource Include="Resources\mipmap-xhdpi\icon_adaptive_back.png" />
+    <AndroidResource Include="Resources\mipmap-xhdpi\icon_adaptive_fore.png" />
+    <AndroidResource Include="Resources\mipmap-xxhdpi\icon_adaptive_back.png" />
+    <AndroidResource Include="Resources\mipmap-xxhdpi\icon_adaptive_fore.png" />
+    <AndroidResource Include="Resources\mipmap-xxxhdpi\icon_adaptive_back.png" />
+    <AndroidResource Include="Resources\mipmap-xxxhdpi\icon_adaptive_fore.png" />
     <AndroidResource Include="Resources\values\styles.xml" />
     <AndroidResource Include="Resources\values\colors.xml" />
     <AndroidResource Include="Resources\mipmap-anydpi-v26\icon.xml" />
@@ -87,9 +108,6 @@
     <AndroidResource Include="Resources\mipmap-xxhdpi\launcher_foreground.png" />
     <AndroidResource Include="Resources\mipmap-xxxhdpi\icon.png" />
     <AndroidResource Include="Resources\mipmap-xxxhdpi\launcher_foreground.png" />
-    <AndroidResource Include="Resources\drawable\xamarin_logo.png" />
-    <AndroidResource Include="Resources\drawable\icon_about.png" />
-    <AndroidResource Include="Resources\drawable\icon_feed.png" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\BookeryMobile\BookeryMobile.csproj">
@@ -140,34 +158,16 @@
     <AndroidResource Include="Resources\drawable\mp3.png" />
   </ItemGroup>
   <ItemGroup>
-    <AndroidResource Include="Resources\drawable\noFiles.png" />
-  </ItemGroup>
-  <ItemGroup>
-    <AndroidResource Include="Resources\drawable\add.png" />
-  </ItemGroup>
-  <ItemGroup>
-    <AndroidResource Include="Resources\drawable\course.png" />
-  </ItemGroup>
-  <ItemGroup>
     <AndroidResource Include="Resources\drawable\delete.png" />
   </ItemGroup>
   <ItemGroup>
-    <AndroidResource Include="Resources\drawable\rename.png" />
-  </ItemGroup>
-  <ItemGroup>
     <AndroidResource Include="Resources\drawable\share.png" />
-  </ItemGroup>
-  <ItemGroup>
-    <AndroidResource Include="Resources\drawable\createDirectory.png" />
   </ItemGroup>
   <ItemGroup>
     <AndroidResource Include="Resources\drawable\upload.png" />
   </ItemGroup>
   <ItemGroup>
     <AndroidResource Include="Resources\drawable\download.png" />
-  </ItemGroup>
-  <ItemGroup>
-    <AndroidResource Include="Resources\drawable\open.png" />
   </ItemGroup>
   <Import Project="$(MSBuildExtensionsPath)\Xamarin\Android\Xamarin.Android.CSharp.targets" />
 </Project>

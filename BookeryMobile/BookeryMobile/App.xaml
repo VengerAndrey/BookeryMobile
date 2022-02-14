@@ -7,38 +7,40 @@
         Define global resources and styles here, that apply to all pages in your app.
     -->
     <Application.Resources>
-        <ResourceDictionary>
-            <Color x:Key="Primary">LightGray</Color>
-            <Style TargetType="Button">
-                <Setter Property="TextColor" Value="Black" />
-                <Setter Property="FontSize" Value="20" />
-                <Setter Property="Padding" Value="30, 10, 30, 10" />
-                <Setter Property="CornerRadius" Value="5" />
-                <Setter Property="VisualStateManager.VisualStateGroups">
-                    <VisualStateGroupList>
-                        <VisualStateGroup x:Name="CommonStates">
-                            <VisualState x:Name="Normal">
-                                <VisualState.Setters>
-                                    <Setter Property="BackgroundColor" Value="{StaticResource Primary}" />
-                                </VisualState.Setters>
-                            </VisualState>
-                            <VisualState x:Name="Disabled">
-                                <VisualState.Setters>
-                                    <Setter Property="Opacity" Value="0.5" />
-                                </VisualState.Setters>
-                            </VisualState>
-                        </VisualStateGroup>
-                    </VisualStateGroupList>
-                </Setter>
-            </Style>
-            <Style TargetType="Label">
-                <Setter Property="TextColor" Value="Black" />
-                <Setter Property="FontSize" Value="20" />
-            </Style>
-            <Style TargetType="Entry">
-                <Setter Property="TextColor" Value="Black" />
-                <Setter Property="FontSize" Value="20" />
-            </Style>
-        </ResourceDictionary>
+        <!-- <ResourceDictionary> -->
+        <!--     <Color x:Key="Primary">LightGray</Color> -->
+        <!--     <Style TargetType="Button"> -->
+        <!--         <Setter Property="TextColor" Value="Black" /> -->
+        <!--         <Setter Property="FontSize" Value="20" /> -->
+        <!--         <Setter Property="Padding" Value="30, 10, 30, 10" /> -->
+        <!--         <Setter Property="CornerRadius" Value="5" /> -->
+        <!--         <Setter Property="VisualStateManager.VisualStateGroups"> -->
+        <!--             <VisualStateGroupList> -->
+        <!--                 <VisualStateGroup x:Name="CommonStates"> -->
+        <!--                     <VisualState x:Name="Normal"> -->
+        <!--                         <VisualState.Setters> -->
+        <!--                             <Setter Property="BackgroundColor" Value="{StaticResource Primary}" /> -->
+        <!--                         </VisualState.Setters> -->
+        <!--                     </VisualState> -->
+        <!--                     <VisualState x:Name="Disabled"> -->
+        <!--                         <VisualState.Setters> -->
+        <!--                             <Setter Property="Opacity" Value="0.5" /> -->
+        <!--                         </VisualState.Setters> -->
+        <!--                     </VisualState> -->
+        <!--                 </VisualStateGroup> -->
+        <!--             </VisualStateGroupList> -->
+        <!--         </Setter> -->
+        <!--     </Style> -->
+        <!--     <Style TargetType="Label"> -->
+        <!--         <Setter Property="TextColor" Value="Black" /> -->
+        <!--         <Setter Property="FontSize" Value="20" /> -->
+        <!--     </Style> -->
+        <!--     <Style TargetType="Entry"> -->
+        <!--         <Setter Property="TextColor" Value="Black" /> -->
+        <!--         <Setter Property="FontSize" Value="20" /> -->
+        <!--     </Style> -->
+        <!-- </ResourceDictionary> -->
+        <ResourceDictionary Source="Resources/DarkTheme.xaml" />
+        <ResourceDictionary Source="Resources/ComponentStyles.xaml" />
     </Application.Resources>
 </Application>

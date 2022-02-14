@@ -7,6 +7,7 @@
     xmlns:animations="clr-namespace:Rg.Plugins.Popup.Animations;assembly=Rg.Plugins.Popup"
     xmlns:viewModels="clr-namespace:BookeryMobile.ViewModels;assembly=BookeryMobile"
     xmlns:models="clr-namespace:Domain.Models;assembly=Domain"
+    xmlns:xct="http://xamarin.com/schemas/2020/toolkit"
     x:Class="BookeryMobile.Views.ShareNodePage">
     <pages:PopupPage.Animation>
         <animations:ScaleAnimation
@@ -24,28 +25,40 @@
         VerticalOptions="Center"
         HorizontalOptions="Center"
         Padding="20, 20, 20, 20">
-        <Frame CornerRadius="10" Padding="20">
+        <Frame CornerRadius="10" Padding="20" BackgroundColor="{DynamicResource Background}">
             <StackLayout Orientation="Vertical">
-                <Label FontSize="24" HorizontalOptions="Center"
-                       Text="{Binding Title}" />
-                <Entry Margin="10" Placeholder="Enter user email" FontSize="24" WidthRequest="200"
-                       Text="{Binding UserEmail, Mode=TwoWay}" />
-                <StackLayout Orientation="Horizontal" HorizontalOptions="Center">
-                    <Label FontSize="Medium" HorizontalOptions="Center"
-                           Text="Write access" />
+                <Label FontSize="20" TextColor="{DynamicResource Foreground}"
+                       Text="{Binding Node.Name}" Margin="0, 0, 0, 10" />
+                <Entry Style="{DynamicResource DefaultEntry}" Placeholder="Email"
+                       Text="{Binding UserEmail, Mode=TwoWay}" WidthRequest="Infinity" Margin="0, 0, 0, 10" />
+                <StackLayout Orientation="Horizontal" HorizontalOptions="Center" Margin="0, 0, 0, 10">
+                    <Label FontSize="20" HorizontalOptions="Center" TextColor="{DynamicResource Foreground}"
+                           Text="Editor" />
                     <CheckBox IsChecked="{Binding IsWriteAccess, Mode=TwoWay}" />
                 </StackLayout>
-                <Button Text="Submit" Command="{Binding SubmitCommand}" CommandParameter="{Binding Node}" />
-                <Label FontSize="24" HorizontalOptions="Center"
-                       Text="Shared with" />
-                <CollectionView x:Name="ItemsListView"
-                                ItemsSource="{Binding Sharing}"
-                                SelectionMode="None">
+                <Button Style="{DynamicResource PrimaryButton}" Text="Share" Command="{Binding SubmitCommand}"
+                        CommandParameter="{Binding Node}" Margin="0, 0, 0, 10" />
+                <Label FontSize="20" HorizontalOptions="Center" Text="Already shared with"
+                       TextColor="{DynamicResource Foreground}" />
+                <CollectionView
+                    ItemsSource="{Binding Sharing}"
+                    SelectionMode="None">
                     <CollectionView.ItemTemplate>
                         <DataTemplate>
-                            <StackLayout Padding="10" Orientation="Horizontal" x:DataType="models:User"
-                                         HeightRequest="28">
-                                    <Label Text="{Binding Email}" FontSize="Medium" />
+                            <SwipeView>
+                                <SwipeView.LeftItems>
+                                    <SwipeItems SwipeBehaviorOnInvoked="Close">
+                                        <SwipeItemView
+                                            Command="{Binding Source={RelativeSource AncestorType={x:Type viewModels:ShareNodeViewModel}}, Path=HideNodeCommand}"
+                                            CommandParameter="{Binding .}">
+                                            <Image Source="delete.png" Style="{DynamicResource SwipeIcon}" />
+                                        </SwipeItemView>
+                                    </SwipeItems>
+                                </SwipeView.LeftItems>
+                                <StackLayout Padding="10" Orientation="Horizontal" x:DataType="models:User"
+                                             HeightRequest="28">
+                                    <Label Text="{Binding Email}" FontSize="18"
+                                           TextColor="{DynamicResource Foreground}" />
                                     <StackLayout.GestureRecognizers>
                                         <TapGestureRecognizer
                                             NumberOfTapsRequired="2"
@@ -53,13 +66,16 @@
                                             CommandParameter="{Binding .}" />
                                     </StackLayout.GestureRecognizers>
                                 </StackLayout>
+                            </SwipeView>
                         </DataTemplate>
                     </CollectionView.ItemTemplate>
                     <CollectionView.EmptyView>
                         <ContentView>
                             <StackLayout Padding="50" HorizontalOptions="Center" VerticalOptions="Center">
-                                <Image Source="noFiles.png" HeightRequest="100" />
-                                <Label Text="It looks like it's empty here." FontSize="Large" Margin="10" />
+                                <Image Source="document_search.png" HeightRequest="50"
+                                       xct:IconTintColorEffect.TintColor="{DynamicResource Foreground}" />
+                                <Label Text="It looks like it's empty here." FontSize="20" Margin="10"
+                                       TextColor="{DynamicResource Foreground}" />
                             </StackLayout>
                         </ContentView>
                     </CollectionView.EmptyView>

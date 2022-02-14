@@ -1,0 +1,10 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+
+<ResourceDictionary xmlns="http://xamarin.com/schemas/2014/forms"
+             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml">
+    <Color x:Key="Background">#28335D</Color>
+    <Color x:Key="Primary">#3D4C7B</Color>
+    <Color x:Key="Secondary">#4F70C3</Color>
+    <Color x:Key="Foreground">#FFFFFF</Color>
+    <Color x:Key="SecondaryForeground">#787A91</Color>
+</ResourceDictionary>

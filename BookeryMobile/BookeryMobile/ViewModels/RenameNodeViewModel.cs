@@ -20,10 +20,10 @@ namespace BookeryMobile.ViewModels
         {
             _popupNavigation = popupNavigation;
             _nodeService = nodeService;
-            Title = "Rename item";
+            Title = "Rename";
             _path = path.Trim('/');
             Node = node;
-            _extension = node.IsDirectory ? "" : node.Name.Substring(node.Name.LastIndexOf('.'));
+            _extension = node.IsDirectory || !node.Name.Contains(".") ? "" : node.Name.Substring(node.Name.LastIndexOf('.'));
             SubmitCommand = new Command(RenameItem, CanRenameItem);
         }
         
@@ -31,7 +31,7 @@ namespace BookeryMobile.ViewModels
         
         public string Name
         {
-            get => Node.IsDirectory ? Node.Name : Node.Name.Substring(0, Node.Name.LastIndexOf('.'));
+            get => Node.IsDirectory || !Node.Name.Contains(".") ? Node.Name : Node.Name.Substring(0, Node.Name.LastIndexOf('.'));
             set
             {
                 Node.Name = value + _extension;

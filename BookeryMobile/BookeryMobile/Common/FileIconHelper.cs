@@ -17,14 +17,15 @@ namespace BookeryMobile.Common
             else
             {
                 var fileExtension = node.Name.Substring(node.Name.LastIndexOf(".") + 1);
-                if (Enum.TryParse<FileExtension>(fileExtension, true, out var res))
-                {
-                    imageSource = ImageSource.FromFile($"{fileExtension}.png");
-                }
-                else
-                {
-                    imageSource = ImageSource.FromFile("unknown.png");
-                }
+                // if (Enum.TryParse<FileExtension>(fileExtension, true, out var res))
+                // {
+                //     imageSource = ImageSource.FromFile($"{fileExtension}.png");
+                // }
+                // else
+                // {
+                //     imageSource = ImageSource.FromFile("unknown.png");
+                // }
+                imageSource = ImageSource.FromFile("document.png");
             }
 
             return imageSource;

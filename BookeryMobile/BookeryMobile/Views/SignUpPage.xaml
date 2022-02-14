@@ -7,51 +7,25 @@
              mc:Ignorable="d"
              x:Class="BookeryMobile.Views.SignUpPage"
              Shell.NavBarIsVisible="False"
-             Shell.FlyoutBehavior="Disabled">
+             Shell.FlyoutBehavior="Disabled"
+             Visual="Material"
+             BackgroundColor="{DynamicResource Background}">
     <ContentPage.Content>
         <StackLayout Padding="10,0,10,0" VerticalOptions="Center">
-            <Label Text="Sign up to Bookery" FontSize="44" VerticalOptions="Start" HorizontalOptions="Center"
+            <Image Source="logo.png" BackgroundColor="Transparent" WidthRequest="100" HeightRequest="100" />
+            <Label Text="Bookery" TextColor="{DynamicResource Foreground}" FontSize="45" HorizontalOptions="Center"
                    Margin="0, 0, 0, 20" />
-            <Grid>
-                <Grid.ColumnDefinitions>
-                    <ColumnDefinition Width="0.55*" />
-                    <ColumnDefinition Width="*" />
-                </Grid.ColumnDefinitions>
-                <Label Grid.Column="0" Text="Email" FontSize="22" Margin="15" />
-                <Entry Grid.Column="1" Placeholder="Enter your email" FontSize="22"
-                       Text="{Binding Email, Mode=TwoWay}" />
-            </Grid>
-            <Grid>
-                <Grid.ColumnDefinitions>
-                    <ColumnDefinition Width="0.55*" />
-                    <ColumnDefinition Width="*" />
-                </Grid.ColumnDefinitions>
-                <Label Grid.Column="0" Text="Username" FontSize="22" Margin="15" />
-                <Entry Grid.Column="1" Placeholder="Enter your username" FontSize="22"
-                       Text="{Binding Username, Mode=TwoWay}" />
-            </Grid>
-            <Grid>
-                <Grid.ColumnDefinitions>
-                    <ColumnDefinition Width="0.55*" />
-                    <ColumnDefinition Width="*" />
-                </Grid.ColumnDefinitions>
-                <Label Grid.Column="0" Text="Password" FontSize="22" Margin="15" />
-                <Entry Grid.Column="1" Placeholder="Enter your password" FontSize="22"
-                       Text="{Binding Password, Mode=TwoWay}" />
-            </Grid>
-            <Grid>
-                <Grid.ColumnDefinitions>
-                    <ColumnDefinition Width="0.55*" />
-                    <ColumnDefinition Width="*" />
-                </Grid.ColumnDefinitions>
-                <Label Grid.Column="0" Text="Confirm password" FontSize="22" Margin="15" />
-                <Entry Grid.Column="1" Placeholder="Enter your password" FontSize="22"
-                       Text="{Binding ConfirmPassword, Mode=TwoWay}" VerticalOptions="Center" />
-            </Grid>
-            <Button HorizontalOptions="Center" Text="Sign up" Margin="0, 20, 0, 20"
-                    Command="{Binding SignUpCommand}" />
-            <Button HorizontalOptions="Center" Text="Sign in"
-                    FontSize="18" Background="Transparent" TextColor="Blue"
+            <Entry Style="{DynamicResource DefaultEntry}" Placeholder="Email" FontSize="20" Text="{Binding Email, Mode=TwoWay}" />
+            <Entry Style="{DynamicResource DefaultEntry}" Placeholder="First name" FontSize="20" Text="{Binding FirstName, Mode=TwoWay}" />
+            <Entry Style="{DynamicResource DefaultEntry}" Placeholder="Last name" FontSize="20" Text="{Binding LastName, Mode=TwoWay}" />
+            <Entry Style="{DynamicResource DefaultEntry}" Placeholder="Password" FontSize="20" Text="{Binding Password, Mode=TwoWay}" />
+            <Entry Style="{DynamicResource DefaultEntry}" Placeholder="Confirm password" FontSize="20" Text="{Binding ConfirmPassword, Mode=TwoWay}" />
+            <Button Style="{DynamicResource PrimaryButton}" HorizontalOptions="Center" Text="Sign up"
+                    Command="{Binding SignUpCommand}"
+                    Margin="0, 20, 0, 20" />
+            <Label HorizontalOptions="Center" Margin="0, 0, 0, 20" Text="or" TextColor="{DynamicResource Foreground}"
+                   FontSize="16" />
+            <Button Style="{DynamicResource SecondaryButton}" HorizontalOptions="Center" Text="Sign in"
                     Command="{Binding ViewSignInCommand}" />
         </StackLayout>
     </ContentPage.Content>

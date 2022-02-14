@@ -5,6 +5,7 @@
     xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
     xmlns:pages="clr-namespace:Rg.Plugins.Popup.Pages;assembly=Rg.Plugins.Popup"
     xmlns:animations="clr-namespace:Rg.Plugins.Popup.Animations;assembly=Rg.Plugins.Popup"
+    xmlns:xct="http://xamarin.com/schemas/2020/toolkit"
     x:Class="BookeryMobile.Views.FileActionsPage">
     <pages:PopupPage.Animation>
         <animations:ScaleAnimation
@@ -22,14 +23,20 @@
         VerticalOptions="Center"
         HorizontalOptions="Center"
         Padding="20, 20, 20, 20">
-        <Frame CornerRadius="10" Padding="20">
-            <StackLayout Orientation="Horizontal">
-                <ImageButton Source="open.png" Command="{Binding OpenCommand}"
-                             Aspect="AspectFill" VerticalOptions="Center" BackgroundColor="Transparent"
-                             HeightRequest="50" Margin="0, 0, 10, 0" />
-                <ImageButton Source="download.png" Command="{Binding DownloadCommand}"
-                             Aspect="AspectFill" VerticalOptions="Center" BackgroundColor="Transparent"
-                             HeightRequest="50" />
+        <Frame CornerRadius="10" Padding="20"
+               BackgroundColor="{DynamicResource Background}">
+            <StackLayout Orientation="Vertical">
+                <Label Text="{Binding Node.Name}" FontSize="20" Margin="0, 0, 0, 5" />
+                <StackLayout Orientation="Horizontal" HorizontalOptions="Center">
+                    <ImageButton Source="arrows_expand.png" Command="{Binding OpenCommand}"
+                                 Aspect="AspectFit" VerticalOptions="Center" BackgroundColor="Transparent"
+                                 HeightRequest="40" Margin="0, 0, 10, 0"
+                                 xct:IconTintColorEffect.TintColor="{DynamicResource SecondaryForeground}" />
+                    <ImageButton Source="download.png" Command="{Binding DownloadCommand}"
+                                 Aspect="AspectFill" VerticalOptions="Center" BackgroundColor="Transparent"
+                                 HeightRequest="40"
+                                 xct:IconTintColorEffect.TintColor="{DynamicResource SecondaryForeground}" />
+                </StackLayout>
             </StackLayout>
         </Frame>
     </StackLayout>

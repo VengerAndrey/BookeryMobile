@@ -21,7 +21,7 @@ namespace BookeryMobile.ViewModels
         {
             _popupNavigation = popupNavigation;
             _nodeService = nodeService;
-            Title = "Create folder";
+            Title = "Create";
             _path = path;
             SubmitCommand = new Command(CreateDirectory, CanCreateDirectory);
         }

@@ -4,7 +4,8 @@
              xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
              x:Class="BookeryMobile.Views.UserPage"
              xmlns:vm="clr-namespace:BookeryMobile.ViewModels"
-             Title="{Binding Title}">
+             Title="{Binding Title}"
+             BackgroundColor="{DynamicResource Background}">
 
     <ContentPage.BindingContext>
         <vm:UserViewModel />
@@ -15,7 +16,7 @@
     </ContentPage.Resources>
 
     <ContentPage.ToolbarItems>
-        <ToolbarItem Text="Log out" Command="{Binding LogOutCommand}" />
+        <ToolbarItem IconImageSource="logout.png" Command="{Binding LogOutCommand}" />
     </ContentPage.ToolbarItems>
 
     <Grid>
@@ -31,7 +32,8 @@
                    WidthRequest="200"
                    HorizontalOptions="Center"
                    Padding="0"
-                   IsClippedToBounds="True">
+                   IsClippedToBounds="True"
+                   BackgroundColor="{DynamicResource Background}">
                 <Image Source="{Binding ProfileImageSource, Mode=TwoWay}"
                        HorizontalOptions="Center"
                        VerticalOptions="Center" />
@@ -43,11 +45,11 @@
             </Frame>
         </StackLayout>
         <StackLayout Grid.Row="1" Orientation="Horizontal" Margin="15" HorizontalOptions="Center">
-            <Label Text="{Binding User.FirstName}" FontSize="Large" />
-            <Label Text="{Binding User.LastName}" FontSize="Large" />
+            <Label Text="{Binding User.FirstName}" FontSize="24" TextColor="{DynamicResource Foreground}" />
+            <Label Text="{Binding User.LastName}" FontSize="24" TextColor="{DynamicResource Foreground}" />
         </StackLayout>
-        <Label Grid.Row="2" Text="{Binding User.Email}" FontSize="Medium" Margin="15"
-               HorizontalTextAlignment="Center" />
+        <Label Grid.Row="2" Text="{Binding User.Email}" FontSize="20" Margin="15"
+               HorizontalTextAlignment="Center" TextColor="{DynamicResource Foreground}" />
     </Grid>
 
 </ContentPage>

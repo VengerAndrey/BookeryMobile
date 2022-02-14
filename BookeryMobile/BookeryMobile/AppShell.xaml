@@ -7,19 +7,35 @@
        xmlns:views="clr-namespace:BookeryMobile.Views;assembly=BookeryMobile">
     <Shell.Resources>
         <ResourceDictionary>
-            <Style x:Key="BaseStyle" TargetType="Element">
-                <Setter Property="Shell.BackgroundColor" Value="LightGray" />
-                <Setter Property="Shell.ForegroundColor" Value="Black" />
-                <Setter Property="Shell.TitleColor" Value="Black" />
-                <Setter Property="Shell.DisabledColor" Value="#B4FFFFFF" />
-                <Setter Property="Shell.UnselectedColor" Value="#95FFFFFF" />
-                <Setter Property="Shell.TabBarBackgroundColor" Value="LightGray" />
-                <Setter Property="Shell.TabBarForegroundColor" Value="Black" />
-                <Setter Property="Shell.TabBarUnselectedColor" Value="DarkGray" />
-                <Setter Property="Shell.TabBarTitleColor" Value="Black" />
+            <!-- <Style x:Key="BaseStyle" TargetType="Element"> -->
+            <!--     <Setter Property="Shell.BackgroundColor" Value="LightGray" /> -->
+            <!--     <Setter Property="Shell.ForegroundColor" Value="Black" /> -->
+            <!--     <Setter Property="Shell.TitleColor" Value="Black" /> -->
+            <!--     <Setter Property="Shell.DisabledColor" Value="#B4FFFFFF" /> -->
+            <!--     <Setter Property="Shell.UnselectedColor" Value="#95FFFFFF" /> -->
+            <!--     <Setter Property="Shell.TabBarBackgroundColor" Value="LightGray" /> -->
+            <!--     <Setter Property="Shell.TabBarForegroundColor" Value="Black" /> -->
+            <!--     <Setter Property="Shell.TabBarUnselectedColor" Value="DarkGray" /> -->
+            <!--     <Setter Property="Shell.TabBarTitleColor" Value="Black" /> -->
+            <!-- </Style> -->
+            <!-- <Style TargetType="TabBar" BasedOn="{StaticResource BaseStyle}" /> -->
+            <!-- <Style TargetType="FlyoutItem" BasedOn="{StaticResource BaseStyle}" /> -->
+            <!-- <Style x:Key="BaseStyle" TargetType="Element"> -->
+            <!--     <Setter Property="Shell.BackgroundColor" Value="{DynamicResource Background}" /> -->
+            <!--     <Setter Property="Shell.ForegroundColor" Value="Black" /> -->
+            <!--     <Setter Property="Shell.TitleColor" Value="Black" /> -->
+            <!--     <Setter Property="Shell.DisabledColor" Value="#B4FFFFFF" /> -->
+            <!--     <Setter Property="Shell.UnselectedColor" Value="#95FFFFFF" /> -->
+            <!--     <Setter Property="Shell.TabBarBackgroundColor" Value="LightGray" /> -->
+            <!--     <Setter Property="Shell.TabBarForegroundColor" Value="Black" /> -->
+            <!--     <Setter Property="Shell.TabBarUnselectedColor" Value="DarkGray" /> -->
+            <!--     <Setter Property="Shell.TabBarTitleColor" Value="Black" /> -->
+            <!-- </Style> -->
+            <Style TargetType="TabBar">
+                <Setter Property="Shell.BackgroundColor" Value="{DynamicResource Primary}" />
+                <Setter Property="Shell.TitleColor" Value="{DynamicResource Foreground}" />
+                <Setter Property="Shell.UnselectedColor" Value="{DynamicResource SecondaryForeground}" />
             </Style>
-            <Style TargetType="TabBar" BasedOn="{StaticResource BaseStyle}" />
-            <Style TargetType="FlyoutItem" BasedOn="{StaticResource BaseStyle}" />
         </ResourceDictionary>
     </Shell.Resources>
 
@@ -31,11 +47,11 @@
     </ShellItem>
 
     <TabBar>
-        <ShellContent Title="Shared" Icon="folder.png" Route="SharedNodesPage"
+        <ShellContent Title="Shared" Icon="people.png" Route="SharedNodesPage"
                       ContentTemplate="{DataTemplate TypeName=views:SharedNodesPage}" />
         <ShellContent Title="Private" Icon="lock.png" Route="PrivateNodesPage"
                       ContentTemplate="{DataTemplate TypeName=views:PrivateNodesPage}" />
-        <ShellContent Title="User" Icon="user.png" Route="UserPage"
+        <ShellContent Title="Profile" Icon="user.png" Route="UserPage"
                       ContentTemplate="{DataTemplate TypeName=views:UserPage}" />
     </TabBar>
 </Shell>

@@ -4,10 +4,13 @@
              xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
              xmlns:viewModels="clr-namespace:BookeryMobile.ViewModels;assembly=BookeryMobile"
              xmlns:models="clr-namespace:BookeryMobile.Models;assembly=BookeryMobile"
+             xmlns:xct="http://xamarin.com/schemas/2020/toolkit"
              x:Class="BookeryMobile.Views.PrivateNodesPage"
-             Title="{Binding Title}">
+             Title="{Binding Title}"
+             BackgroundColor="{DynamicResource Background}"
+             Visual="Material">
     <ContentPage.ToolbarItems>
-        <ToolbarItem IconImageSource="createDirectory.png" x:DataType="viewModels:PrivateNodesViewModel"
+        <ToolbarItem IconImageSource="folder_add.png" x:DataType="viewModels:PrivateNodesViewModel"
                      Command="{Binding CreateDirectoryCommand}" />
         <ToolbarItem IconImageSource="upload.png" x:DataType="viewModels:PrivateNodesViewModel"
                      Command="{Binding UploadFileCommand}" />
@@ -25,26 +28,27 @@
                                 <SwipeItemView
                                     Command="{Binding Source={x:Reference ItemsListView}, Path=BindingContext.RenameNodeCommand}"
                                     CommandParameter="{Binding Source={RelativeSource Self}, Path=BindingContext.Node}">
-                                    <Image Source="rename.png" Aspect="AspectFit" Margin="5" WidthRequest="40" />
+                                    <Image Source="edit.png" Style="{DynamicResource SwipeIcon}" />
                                 </SwipeItemView>
                                 <SwipeItemView
                                     Command="{Binding Source={x:Reference ItemsListView}, Path=BindingContext.DeleteNodeCommand}"
                                     CommandParameter="{Binding Source={RelativeSource Self}, Path=BindingContext.Node}">
-                                    <Image Source="delete.png" Aspect="AspectFit" Margin="5" WidthRequest="40" />
+                                    <Image Source="delete.png" Style="{DynamicResource SwipeIcon}" />
                                 </SwipeItemView>
                                 <SwipeItemView
                                     Command="{Binding Source={x:Reference ItemsListView}, Path=BindingContext.ShareNodeCommand}"
                                     CommandParameter="{Binding Source={RelativeSource Self}, Path=BindingContext.Node}">
-                                    <Image Source="share.png" Aspect="AspectFit" Margin="5" WidthRequest="40" />
+                                    <Image Source="share.png" Style="{DynamicResource SwipeIcon}" />
                                 </SwipeItemView>
                             </SwipeItems>
                         </SwipeView.LeftItems>
                         <StackLayout Padding="10" x:DataType="models:NodeElement" Orientation="Horizontal"
                                      HeightRequest="28">
                             <Image Source="{Binding ImageSource}" Aspect="AspectFit"
-                                   HorizontalOptions="Center" VerticalOptions="Center" />
+                                   HorizontalOptions="Center" VerticalOptions="Center"
+                                   xct:IconTintColorEffect.TintColor="{DynamicResource SecondaryForeground}"/>
                             <Label Text="{Binding Node.Name}"
-                                   FontSize="20" />
+                                   FontSize="20" TextColor="{DynamicResource Foreground}" />
                             <StackLayout.GestureRecognizers>
                                 <TapGestureRecognizer
                                     NumberOfTapsRequired="1"
@@ -58,8 +62,10 @@
             <CollectionView.EmptyView>
                 <ContentView>
                     <StackLayout Padding="50" HorizontalOptions="Center" VerticalOptions="Center">
-                        <Image Source="noFiles.png" HeightRequest="100" />
-                        <Label Text="It looks like it's empty here." FontSize="Large" Margin="10" />
+                        <Image Source="document_search.png" HeightRequest="50"
+                               xct:IconTintColorEffect.TintColor="{DynamicResource Foreground}"/>
+                        <Label Text="It looks like it's empty here." FontSize="20" Margin="10"
+                               TextColor="{DynamicResource Foreground}"/>
                     </StackLayout>
                 </ContentView>
             </CollectionView.EmptyView>

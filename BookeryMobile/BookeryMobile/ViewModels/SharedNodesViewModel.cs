@@ -110,12 +110,12 @@ namespace BookeryMobile.ViewModels
 
         private void OpenRenameNodePopup(Node node)
         {
-            PushPopupPage(new AlterItemPage(new RenameNodeViewModel(PopupNavigation.Instance, _nodeService, _path + '/' + node.Name, node)));
+            PushPopupPage(new AlterNodePage(new RenameNodeViewModel(PopupNavigation.Instance, _nodeService, _path + '/' + node.Name, node)));
         }
 
         private void OpenCreateDirectoryPopup()
         {
-            PushPopupPage(new AlterItemPage(new CreateDirectoryViewModel(PopupNavigation.Instance, _nodeService, _path)));
+            PushPopupPage(new AlterNodePage(new CreateDirectoryViewModel(PopupNavigation.Instance, _nodeService, _path)));
         }
 
         private async void UploadFile()
