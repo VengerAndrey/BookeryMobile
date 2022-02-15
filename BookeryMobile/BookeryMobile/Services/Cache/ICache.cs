@@ -8,5 +8,6 @@ namespace BookeryMobile.Services.Cache
         bool FileExists(string filename);
         Stream GetFile(string filename);
         Task SaveFile(Stream data, string filename);
+        void DeleteFile(string filename);
     }
 }

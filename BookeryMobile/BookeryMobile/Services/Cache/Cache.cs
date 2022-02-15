@@ -28,5 +28,10 @@ namespace BookeryMobile.Services.Cache
             }
             File.WriteAllBytes(Path.Combine(_path, filename), bytes);
         }
+
+        public void DeleteFile(string filename)
+        {
+            File.Delete(Path.Combine(_path, filename));
+        }
     }
 }

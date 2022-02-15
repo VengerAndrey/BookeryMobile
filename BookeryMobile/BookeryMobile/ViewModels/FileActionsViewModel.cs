@@ -20,22 +20,23 @@ namespace BookeryMobile.ViewModels
         public FileActionsViewModel(Node node)
         {
             Node = node;
-            Size = GetSizeString(node);
-            Created = GetCreatedString(node);
+            SizeString = GetSizeString(node);
+            CreatedString = GetCreatedString(node);
             OpenCommand = new Command(Open);
             DownloadCommand = new Command(Download);
+            DeleteDownloadCommand = new Command(DeleteDownload, () => IsCached);
         }
         
         public Node Node { get; set; }
         
-        public string Size { get; }
-        
-        public string Created { get; }
-
-        public string Cached => _cache.FileExists(Node.Id.ToString()) ? "Yes" : "No";
+        public string SizeString { get; }
+        public string CreatedString { get; }
+        public string CachedString => IsCached ? "Yes" : "No";
+        public bool IsCached => _cache.FileExists(Node.Id.ToString());
         
         public Command OpenCommand { get; }
         public Command DownloadCommand { get; }
+        public Command DeleteDownloadCommand { get; }
         
         private async void Open()
         {
@@ -79,6 +80,13 @@ namespace BookeryMobile.ViewModels
                 _message.Short("File cached locally.");
             }
         
+            await PopupNavigation.Instance.PopAllAsync();
+        }
+
+        private async void DeleteDownload()
+        {
+            _cache.DeleteFile(Node.Id.ToString());
+            _message.Short("File removed from local cache.");
             await PopupNavigation.Instance.PopAllAsync();
         }
         

@@ -29,15 +29,15 @@
                 <Label Text="{Binding Node.Name}" FontSize="20" Margin="0, 0, 0, 5" LineBreakMode="MiddleTruncation" />
                 <StackLayout Orientation="Horizontal" Margin="0, 0, 0, 5">
                     <Label Text="Size:" FontSize="18" Margin="0, 0, 5, 0" />
-                    <Label Text="{Binding Size}" FontSize="18" />
+                    <Label Text="{Binding SizeString}" FontSize="18" />
                 </StackLayout>
                 <StackLayout Orientation="Horizontal" Margin="0, 0, 0, 5">
                     <Label Text="Created:" FontSize="18" Margin="0, 0, 5, 0" />
-                    <Label Text="{Binding Created}" FontSize="18" />
+                    <Label Text="{Binding CreatedString}" FontSize="18" />
                 </StackLayout>
                 <StackLayout Orientation="Horizontal" Margin="0, 0, 0, 5">
                     <Label Text="Cached:" FontSize="18" Margin="0, 0, 5, 0" />
-                    <Label Text="{Binding Cached}" FontSize="18" />
+                    <Label Text="{Binding CachedString}" FontSize="18" />
                 </StackLayout>
                 <StackLayout Orientation="Horizontal" HorizontalOptions="Center">
                     <ImageButton Source="arrows_expand.png" Command="{Binding OpenCommand}"
@@ -46,8 +46,13 @@
                                  xct:IconTintColorEffect.TintColor="{DynamicResource SecondaryForeground}" />
                     <ImageButton Source="download.png" Command="{Binding DownloadCommand}"
                                  Aspect="AspectFill" VerticalOptions="Center" BackgroundColor="Transparent"
-                                 HeightRequest="40"
+                                 HeightRequest="40" Margin="0, 0, 10, 0"
                                  xct:IconTintColorEffect.TintColor="{DynamicResource SecondaryForeground}" />
+                    <ImageButton Source="delete.png" Command="{Binding DeleteDownloadCommand}"
+                                 Aspect="AspectFill" VerticalOptions="Center" BackgroundColor="Transparent"
+                                 HeightRequest="40"
+                                 xct:IconTintColorEffect.TintColor="{DynamicResource SecondaryForeground}"
+                                 IsVisible="{Binding IsCached}"/>
                 </StackLayout>
             </StackLayout>
         </Frame>
