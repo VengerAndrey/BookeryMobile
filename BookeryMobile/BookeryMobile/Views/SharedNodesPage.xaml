@@ -37,7 +37,7 @@
                                    HorizontalOptions="Center" VerticalOptions="Center"
                                    xct:IconTintColorEffect.TintColor="{DynamicResource SecondaryForeground}"/>
                             <Label Text="{Binding Node.Name}"
-                                   FontSize="20" TextColor="{DynamicResource Foreground}" />
+                                   FontSize="20" TextColor="{DynamicResource Foreground}" LineBreakMode="TailTruncation" />
                             <StackLayout.GestureRecognizers>
                                 <TapGestureRecognizer
                                     NumberOfTapsRequired="1"

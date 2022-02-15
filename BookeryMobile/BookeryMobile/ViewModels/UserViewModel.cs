@@ -76,6 +76,10 @@ namespace BookeryMobile.ViewModels
             {
                 _message.Short(e.Message);
             }
+            catch (ServiceUnavailableException e)
+            {
+                _message.Short(e.Message);
+            }
         }
 
         private async void LoadProfilePhoto()

@@ -1,4 +1,5 @@
-﻿using System.Net.Http;
+﻿using System.Net;
+using System.Net.Http;
 using System.Net.Http.Headers;
 using System.Threading.Tasks;
 using BookeryApi.Exceptions;
@@ -23,6 +24,10 @@ namespace BookeryApi.Services.Authentication
             if (response.IsSuccessStatusCode)
             {
                 return await response.Content.ReadAsAsync<AuthenticationResponse>();
+            }
+            if (response.StatusCode == HttpStatusCode.ServiceUnavailable)
+            {
+                throw new ServiceUnavailableException();
             }
 
             throw new InvalidCredentialException();
@@ -51,6 +56,11 @@ namespace BookeryApi.Services.Authentication
         public async Task<SignUpResult> SignUp(SignUpRequest signUpRequest)
         {
             var response = await _httpClient.PostAsJsonAsync("sign-up", signUpRequest);
+
+            if (response.StatusCode == HttpStatusCode.ServiceUnavailable)
+            {
+                throw new ServiceUnavailableException();
+            }
 
             return await response.Content.ReadAsAsync<SignUpResult>();
         }

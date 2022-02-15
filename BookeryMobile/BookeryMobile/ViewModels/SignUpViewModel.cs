@@ -1,4 +1,5 @@
 ﻿using System;
+using BookeryApi.Exceptions;
 using BookeryMobile.Common;
 using BookeryMobile.Services.Authentication;
 using BookeryMobile.Views;
@@ -87,20 +88,27 @@ namespace BookeryMobile.ViewModels
 
         private async void SignUp()
         {
-            var signUpResult = await _authenticator.SignUp(Email, LastName, FirstName, Password);
-
-            switch (signUpResult)
+            try
             {
-                default:
-                case SignUpResult.Success:
-                    await Shell.Current.GoToAsync($"//{nameof(SignInPage)}");
-                    break;
-                case SignUpResult.EmailAlreadyExists:
-                    _message.Short("Email already exists.");
-                    break;
-                case SignUpResult.InvalidEmail:
-                    _message.Short("Email is invalid.");
-                    break;
+                var signUpResult = await _authenticator.SignUp(Email, LastName, FirstName, Password);
+
+                switch (signUpResult)
+                {
+                    default:
+                    case SignUpResult.Success:
+                        await Shell.Current.GoToAsync($"//{nameof(SignInPage)}");
+                        break;
+                    case SignUpResult.EmailAlreadyExists:
+                        _message.Short("Email already exists.");
+                        break;
+                    case SignUpResult.InvalidEmail:
+                        _message.Short("Email is invalid.");
+                        break;
+                }
+            }
+            catch (ServiceUnavailableException e)
+            {
+                _message.Short(e.Message);
             }
         }
 

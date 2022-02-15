@@ -1,5 +1,4 @@
 ﻿using BookeryApi.Exceptions;
-using BookeryApi.Services.Node;
 using BookeryMobile.Common;
 using BookeryMobile.Services.Authentication;
 using BookeryMobile.Views;
@@ -10,7 +9,6 @@ namespace BookeryMobile.ViewModels
     public class SignInViewModel : BaseViewModel
     {
         private readonly IAuthenticator _authenticator = DependencyService.Get<IAuthenticator>();
-        private readonly IPrivateNodeService _privateNodeService = DependencyService.Get<IPrivateNodeService>();
         private readonly IMessage _message = DependencyService.Get<IMessage>();
 
         private string _email = "user@gmail.com";
@@ -67,6 +65,10 @@ namespace BookeryMobile.ViewModels
             try
             {
                 await _authenticator.SignIn(Email, Password);
+            }
+            catch (ServiceUnavailableException e)
+            {
+                _message.Short(e.Message);
             }
             catch (InvalidCredentialException e)
             {

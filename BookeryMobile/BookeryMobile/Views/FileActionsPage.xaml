@@ -26,7 +26,7 @@
         <Frame CornerRadius="10" Padding="20"
                BackgroundColor="{DynamicResource Background}">
             <StackLayout Orientation="Vertical">
-                <Label Text="{Binding Node.Name}" FontSize="20" Margin="0, 0, 0, 5" />
+                <Label Text="{Binding Node.Name}" FontSize="20" Margin="0, 0, 0, 5" LineBreakMode="MiddleTruncation" />
                 <StackLayout Orientation="Horizontal" HorizontalOptions="Center">
                     <ImageButton Source="arrows_expand.png" Command="{Binding OpenCommand}"
                                  Aspect="AspectFit" VerticalOptions="Center" BackgroundColor="Transparent"

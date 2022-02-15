@@ -1,5 +1,6 @@
 ﻿using System;
 using System.IO;
+using System.Net;
 using System.Net.Http;
 using System.Net.Http.Headers;
 using System.Threading.Tasks;
@@ -23,6 +24,10 @@ namespace BookeryApi.Services.User
             {
                 return await response.Content.ReadAsAsync<Domain.Models.User>();
             }
+            if (response.StatusCode == HttpStatusCode.ServiceUnavailable)
+            {
+                throw new ServiceUnavailableException();
+            }
 
             throw new DataNotFoundException("User");
         }
@@ -35,6 +40,10 @@ namespace BookeryApi.Services.User
             {
                 return await response.Content.ReadAsAsync<Domain.Models.User>();
             }
+            if (response.StatusCode == HttpStatusCode.ServiceUnavailable)
+            {
+                throw new ServiceUnavailableException();
+            }
 
             throw new DataNotFoundException("User");
         }
@@ -46,6 +55,10 @@ namespace BookeryApi.Services.User
             if (response.IsSuccessStatusCode)
             {
                 return await response.Content.ReadAsAsync<Domain.Models.User>();
+            }
+            if (response.StatusCode == HttpStatusCode.ServiceUnavailable)
+            {
+                throw new ServiceUnavailableException();
             }
 
             throw new DataNotFoundException("User");
