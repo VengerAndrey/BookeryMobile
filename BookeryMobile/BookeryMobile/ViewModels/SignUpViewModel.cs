@@ -91,17 +91,16 @@ namespace BookeryMobile.ViewModels
 
             switch (signUpResult)
             {
+                default:
                 case SignUpResult.Success:
                     await Shell.Current.GoToAsync($"//{nameof(SignInPage)}");
                     break;
                 case SignUpResult.EmailAlreadyExists:
                     _message.Short("Email already exists.");
                     break;
-                case SignUpResult.UsernameAlreadyExists:
-                    _message.Short("Username already exists.");
+                case SignUpResult.InvalidEmail:
+                    _message.Short("Email is invalid.");
                     break;
-                default:
-                    throw new ArgumentOutOfRangeException();
             }
         }
 
