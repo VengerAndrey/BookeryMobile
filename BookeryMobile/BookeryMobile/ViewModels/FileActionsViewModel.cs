@@ -16,15 +16,23 @@ namespace BookeryMobile.ViewModels
         private readonly IStorageService _storageService = DependencyService.Get<IStorageService>();
         private readonly ICache _cache = DependencyService.Get<ICache>();
         private readonly IMessage _message = DependencyService.Get<IMessage>();
-        
+
         public FileActionsViewModel(Node node)
         {
             Node = node;
+            Size = GetSizeString(node);
+            Created = GetCreatedString(node);
             OpenCommand = new Command(Open);
             DownloadCommand = new Command(Download);
         }
         
         public Node Node { get; set; }
+        
+        public string Size { get; }
+        
+        public string Created { get; }
+
+        public string Cached => _cache.FileExists(Node.Id.ToString()) ? "Yes" : "No";
         
         public Command OpenCommand { get; }
         public Command DownloadCommand { get; }
@@ -68,20 +76,34 @@ namespace BookeryMobile.ViewModels
             if (content != null)
             {
                 await _cache.SaveFile(content, Node.Id.ToString());
-                // byte[] bytes;
-                // using (var memoryStream = new MemoryStream())
-                // {
-                //     await content.CopyToAsync(memoryStream);
-                //     bytes = memoryStream.ToArray();
-                // }
-                //
-                //
-                // //var r = Directory.GetFiles(Environment.GetFolderPath(Environment.SpecialFolder.Personal));
-                // string localPath = Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.Personal), Node.Id.ToString());
-                // File.WriteAllBytes(localPath, bytes);
+                _message.Short("File cached locally.");
             }
         
             await PopupNavigation.Instance.PopAllAsync();
+        }
+        
+        private string GetSizeString(Node node)
+        {
+            if (node.Size < 1000)
+            {
+                return $"{node.Size} B";
+            }
+            if (node.Size < 1000 * 1000)
+            {
+                return $"{node.Size / 1000} KB";
+            }
+            if (node.Size < 1000 * 1000 * 1000)
+            {
+                return $"{node.Size / 1000 / 1000} MB";
+            }
+            return $"{node.Size / 1000 / 1000 / 1000} GB";
+        }
+
+        private string GetCreatedString(Node node)
+        {
+            var dateTime = new DateTime(1970, 1, 1, 0, 0, 0, 0, DateTimeKind.Utc);
+            dateTime = dateTime.AddSeconds(node.CreationTimestamp).ToLocalTime();
+            return dateTime.ToString();
         }
     }
 }

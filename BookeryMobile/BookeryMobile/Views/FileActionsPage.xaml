@@ -27,6 +27,18 @@
                BackgroundColor="{DynamicResource Background}">
             <StackLayout Orientation="Vertical">
                 <Label Text="{Binding Node.Name}" FontSize="20" Margin="0, 0, 0, 5" LineBreakMode="MiddleTruncation" />
+                <StackLayout Orientation="Horizontal" Margin="0, 0, 0, 5">
+                    <Label Text="Size:" FontSize="18" Margin="0, 0, 5, 0" />
+                    <Label Text="{Binding Size}" FontSize="18" />
+                </StackLayout>
+                <StackLayout Orientation="Horizontal" Margin="0, 0, 0, 5">
+                    <Label Text="Created:" FontSize="18" Margin="0, 0, 5, 0" />
+                    <Label Text="{Binding Created}" FontSize="18" />
+                </StackLayout>
+                <StackLayout Orientation="Horizontal" Margin="0, 0, 0, 5">
+                    <Label Text="Cached:" FontSize="18" Margin="0, 0, 5, 0" />
+                    <Label Text="{Binding Cached}" FontSize="18" />
+                </StackLayout>
                 <StackLayout Orientation="Horizontal" HorizontalOptions="Center">
                     <ImageButton Source="arrows_expand.png" Command="{Binding OpenCommand}"
                                  Aspect="AspectFit" VerticalOptions="Center" BackgroundColor="Transparent"
