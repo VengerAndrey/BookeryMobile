@@ -1,4 +1,5 @@
-﻿using System.Net;
+﻿using System;
+using System.Net;
 using System.Net.Http;
 using System.Net.Http.Headers;
 using System.Threading.Tasks;
@@ -18,19 +19,26 @@ namespace BookeryApi.Services.Authentication
 
         public async Task<AuthenticationResponse> GetToken(AuthenticationRequest authenticationRequest)
         {
-            var response = await _httpClient.PostAsJsonAsync("token", authenticationRequest)
-                .ConfigureAwait(false);
-
-            if (response.IsSuccessStatusCode)
+            try
             {
-                return await response.Content.ReadAsAsync<AuthenticationResponse>();
+                var response = await _httpClient.PostAsJsonAsync("token", authenticationRequest)
+                    .ConfigureAwait(false);
+
+                if (response.IsSuccessStatusCode)
+                {
+                    return await response.Content.ReadAsAsync<AuthenticationResponse>();
+                }
+                if (response.StatusCode == HttpStatusCode.ServiceUnavailable)
+                {
+                    throw new ServiceUnavailableException();
+                }
+
+                throw new InvalidCredentialException();
             }
-            if (response.StatusCode == HttpStatusCode.ServiceUnavailable)
+            catch (WebException e)
             {
                 throw new ServiceUnavailableException();
             }
-
-            throw new InvalidCredentialException();
         }
 
         public async Task<AuthenticationResponse> RefreshToken(string accessToken, string refreshToken)
@@ -43,19 +51,33 @@ namespace BookeryApi.Services.Authentication
                 RefreshToken = refreshToken
             };
 
-            var response = await _httpClient.PostAsJsonAsync("refresh-token", refreshTokenRequest);
-
-            if (response.IsSuccessStatusCode)
+            try
             {
-                return await response.Content.ReadAsAsync<AuthenticationResponse>();
-            }
+                var response = await _httpClient.PostAsJsonAsync("refresh-token", refreshTokenRequest);
 
-            return null;
+                if (response.IsSuccessStatusCode)
+                {
+                    return await response.Content.ReadAsAsync<AuthenticationResponse>();
+                }
+
+                return null;
+            }
+            catch (WebException e)
+            {
+                throw new ServiceUnavailableException();
+            }
         }
 
         public async Task LogOut()
         {
-            await _httpClient.DeleteAsync("sign-out");
+            try
+            {
+                await _httpClient.DeleteAsync("sign-out");
+            }
+            catch (WebException e)
+            {
+                throw new ServiceUnavailableException();
+            }
         }
     }
 }

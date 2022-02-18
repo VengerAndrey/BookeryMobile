@@ -1,4 +1,5 @@
-﻿using System.Net;
+﻿using System;
+using System.Net;
 using System.Net.Http;
 using System.Threading.Tasks;
 using BookeryApi.Exceptions;
@@ -17,14 +18,21 @@ namespace BookeryApi.Services.User
         
         public async Task<SignUpResult> SignUp(SignUpRequest signUpRequest)
         {
-            var response = await _httpClient.PostAsJsonAsync("", signUpRequest);
+            try
+            {
+                var response = await _httpClient.PostAsJsonAsync("", signUpRequest);
 
-            if (response.StatusCode == HttpStatusCode.ServiceUnavailable)
+                if (response.StatusCode == HttpStatusCode.ServiceUnavailable)
+                {
+                    throw new ServiceUnavailableException();
+                }
+
+                return await response.Content.ReadAsAsync<SignUpResult>();
+            }
+            catch (WebException e)
             {
                 throw new ServiceUnavailableException();
             }
-
-            return await response.Content.ReadAsAsync<SignUpResult>();
         }
     }
 }
