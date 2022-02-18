@@ -13,6 +13,11 @@ namespace BookeryMobile.Services.Cache
             return File.Exists(Path.Combine(_path, filename));
         }
 
+        public bool FilesExist()
+        {
+            return Directory.GetFiles(_path).Length > 0;
+        }
+
         public Stream GetFile(string filename)
         {
             return File.OpenRead(Path.Combine(_path, filename));
@@ -32,6 +37,15 @@ namespace BookeryMobile.Services.Cache
         public void DeleteFile(string filename)
         {
             File.Delete(Path.Combine(_path, filename));
+        }
+
+        public void DeleteAllFiles()
+        {
+            var files = Directory.GetFiles(_path);
+            foreach (var file in files)
+            {
+                File.Delete(file);
+            }
         }
     }
 }

@@ -1,15 +1,18 @@
 ﻿using System;
 using System.IO;
+using System.Threading.Tasks;
 using System.Windows.Input;
 using BookeryApi.Exceptions;
 using BookeryApi.Services.Photo;
 using BookeryApi.Services.User;
 using BookeryMobile.Common;
 using BookeryMobile.Services.Authentication;
+using BookeryMobile.Services.Cache;
 using BookeryMobile.Views;
 using Domain.Models;
 using Rg.Plugins.Popup.Pages;
 using Rg.Plugins.Popup.Services;
+using Xamarin.CommunityToolkit.Extensions;
 using Xamarin.Essentials;
 using Xamarin.Forms;
 
@@ -21,6 +24,7 @@ namespace BookeryMobile.ViewModels
         private readonly IUserService _userService = DependencyService.Get<IUserService>();
         private readonly IPhotoService _photoService = DependencyService.Get<IPhotoService>();
         private readonly IMessage _message = DependencyService.Get<IMessage>();
+        private readonly ICache _cache = DependencyService.Get<ICache>();
         private ImageSource _profileImageSource;
         private PopupPage _page;
 
@@ -37,12 +41,14 @@ namespace BookeryMobile.ViewModels
                 _authenticator.SignOut();
                 await Shell.Current.GoToAsync($"//{nameof(SignInPage)}");
             });
+            ClearCacheCommand = new Command(ClearCache, () => _cache.FilesExist());
         }
 
         public ICommand LoadUserCommand { get; }
         public ICommand LoadProfileImageCommand { get; }
         public Command UploadProfileImageCommand { get; }
         public ICommand LogOutCommand { get; }
+        public Command ClearCacheCommand { get; }
 
         public User User
         {
@@ -63,6 +69,7 @@ namespace BookeryMobile.ViewModels
         public void OnAppearing()
         {
             LoadUserCommand.Execute(null);
+            ClearCacheCommand.ChangeCanExecute();
         }
 
         private async void LoadUser()
@@ -140,6 +147,13 @@ namespace BookeryMobile.ViewModels
             {
                 PopPopupPage();
             }
+        }
+
+        private void ClearCache()
+        {
+            _cache.DeleteAllFiles();
+            _message.Short("Local cache has been cleared.");
+            ClearCacheCommand.ChangeCanExecute();
         }
         
         private async void PushPopupPage(PopupPage page)

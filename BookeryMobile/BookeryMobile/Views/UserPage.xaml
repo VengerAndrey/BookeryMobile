@@ -16,6 +16,7 @@
     </ContentPage.Resources>
 
     <ContentPage.ToolbarItems>
+        <ToolbarItem IconImageSource="delete.png" Command="{Binding ClearCacheCommand}" />
         <ToolbarItem IconImageSource="logout.png" Command="{Binding LogOutCommand}" />
     </ContentPage.ToolbarItems>
 
