@@ -1,8 +1,10 @@
 ﻿using System;
 using BookeryApi.Exceptions;
+using BookeryApi.Services.User;
 using BookeryMobile.Common;
 using BookeryMobile.Services.Authentication;
 using BookeryMobile.Views;
+using Domain.Models.DTOs.Requests;
 using Domain.Models.DTOs.Responses;
 using Xamarin.Forms;
 
@@ -10,14 +12,14 @@ namespace BookeryMobile.ViewModels
 {
     internal class SignUpViewModel : BaseViewModel
     {
-        private readonly IAuthenticator _authenticator = DependencyService.Get<IAuthenticator>();
+        private readonly ISignUpService _signUpService = DependencyService.Get<ISignUpService>();
         private readonly IMessage _message = DependencyService.Get<IMessage>();
-        private string _confirmPassword = "123";
+        private string _confirmPassword = "";
 
-        private string _email = "mobile@gmail.com";
-        private string _password = "123";
-        private string _firstName = "first";
-        private string _lastName = "second";
+        private string _email = "";
+        private string _password = "";
+        private string _firstName = "";
+        private string _lastName = "";
 
         public SignUpViewModel()
         {
@@ -90,7 +92,14 @@ namespace BookeryMobile.ViewModels
         {
             try
             {
-                var signUpResult = await _authenticator.SignUp(Email, LastName, FirstName, Password);
+                var signUpRequest = new SignUpRequest
+                {
+                    Email = Email,
+                    LastName = LastName,
+                    FirstName = FirstName,
+                    Password = Password
+                };
+                var signUpResult = await _signUpService.SignUp(signUpRequest);
 
                 switch (signUpResult)
                 {
@@ -116,6 +125,7 @@ namespace BookeryMobile.ViewModels
         {
             return !string.IsNullOrEmpty(Email) &&
                    !string.IsNullOrEmpty(FirstName) &&
+                   !string.IsNullOrEmpty(LastName) &&
                    !string.IsNullOrEmpty(Password) &&
                    !string.IsNullOrEmpty(ConfirmPassword) &&
                    Password == ConfirmPassword;

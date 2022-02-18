@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.ObjectModel;
+using System.IO;
 using BookeryApi.Services.Node;
 using BookeryApi.Services.Storage;
 using BookeryMobile.Common;
@@ -16,7 +17,8 @@ namespace BookeryMobile.ViewModels
     class SharedNodesViewModel : BaseViewModel
     {
         private readonly string _path;
-        private readonly ISharedNodeService _nodeService = DependencyService.Get<ISharedNodeService>();
+        private readonly ISharedNodeService _sharedNodeService = DependencyService.Get<ISharedNodeService>();
+        private readonly ISharingService _sharingService = DependencyService.Get<ISharingService>();
         private readonly IStorageService _storageService = DependencyService.Get<IStorageService>();
         private readonly IMessage _message = DependencyService.Get<IMessage>();
         private readonly INavigation _navigation;
@@ -70,7 +72,7 @@ namespace BookeryMobile.ViewModels
         {
             IsBusy = true;
             Nodes.Clear();
-            var nodes = await _nodeService.Get(_path);
+            var nodes = await _sharedNodeService.Get(_path);
             if (nodes != null)
             {
                 foreach (var node in nodes)
@@ -110,12 +112,13 @@ namespace BookeryMobile.ViewModels
 
         private void OpenRenameNodePopup(Node node)
         {
-            PushPopupPage(new AlterNodePage(new RenameNodeViewModel(PopupNavigation.Instance, _nodeService, _path + '/' + node.Name, node)));
+            PushPopupPage(new AlterNodePage(new RenameNodeViewModel(PopupNavigation.Instance, _sharedNodeService, 
+                Path.Combine(_path, (_path.Length > 0) ? node.Name : node.Id.ToString()), node)));
         }
 
         private void OpenCreateDirectoryPopup()
         {
-            PushPopupPage(new AlterNodePage(new CreateDirectoryViewModel(PopupNavigation.Instance, _nodeService, _path)));
+            PushPopupPage(new AlterNodePage(new CreateDirectoryViewModel(PopupNavigation.Instance, _sharedNodeService, _path)));
         }
 
         private async void UploadFile()
@@ -131,7 +134,7 @@ namespace BookeryMobile.ViewModels
                     PushPopupPage(new LoadingPage());
             
                     var fileName = file.FileName;
-                    var node = await _nodeService.Create(_path, new Node()
+                    var node = await _sharedNodeService.Create(_path, new Node()
                     {
                         IsDirectory = false,
                         Name = fileName
@@ -182,7 +185,7 @@ namespace BookeryMobile.ViewModels
 
         private async void SetRootTitle(Guid id)
         {
-            var rootNode = await _nodeService.Details(id);
+            var rootNode = await _sharingService.Details(id);
             Title = rootNode.Name;
         }
     }

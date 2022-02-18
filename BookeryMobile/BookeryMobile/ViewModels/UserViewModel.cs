@@ -2,7 +2,7 @@
 using System.IO;
 using System.Windows.Input;
 using BookeryApi.Exceptions;
-using BookeryApi.Services.Storage;
+using BookeryApi.Services.Photo;
 using BookeryApi.Services.User;
 using BookeryMobile.Common;
 using BookeryMobile.Services.Authentication;
@@ -19,7 +19,7 @@ namespace BookeryMobile.ViewModels
     {
         private readonly IAuthenticator _authenticator = DependencyService.Get<IAuthenticator>();
         private readonly IUserService _userService = DependencyService.Get<IUserService>();
-        private readonly IStorageService _storageService = DependencyService.Get<IStorageService>();
+        private readonly IPhotoService _photoService = DependencyService.Get<IPhotoService>();
         private readonly IMessage _message = DependencyService.Get<IMessage>();
         private ImageSource _profileImageSource;
         private PopupPage _page;
@@ -86,7 +86,7 @@ namespace BookeryMobile.ViewModels
         {
             try
             {
-                var content = await _storageService.DownloadProfilePhoto(User.Id);
+                var content = await _photoService.DownloadProfilePhoto();
             
                 if (content != null)
                 {
@@ -120,7 +120,7 @@ namespace BookeryMobile.ViewModels
                     PushPopupPage(new LoadingPage());
             
                     var stream = await file.OpenReadAsync();
-                    var result = await _storageService.UploadProfilePhoto(User.Id, stream);
+                    var result = await _photoService.UploadProfilePhoto(stream);
             
                     if (result)
                     {

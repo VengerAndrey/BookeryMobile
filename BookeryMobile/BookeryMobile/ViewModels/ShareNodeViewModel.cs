@@ -1,6 +1,7 @@
 ﻿using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.Linq;
+using System.Threading.Tasks;
 using BookeryApi.Exceptions;
 using BookeryApi.Services.Node;
 using BookeryApi.Services.User;
@@ -13,11 +14,11 @@ namespace BookeryMobile.ViewModels
 {
     public class ShareNodeViewModel: BaseViewModel
     {
-        private readonly ISharedNodeService _sharedNodeService = DependencyService.Get<ISharedNodeService>();
+        private readonly ISharingService _sharingService = DependencyService.Get<ISharingService>();
         private readonly IUserService _userService = DependencyService.Get<IUserService>();
         private readonly IMessage _message = DependencyService.Get<IMessage>();
         private readonly IPopupNavigation _popupNavigation;
-        private string _userEmail = "client@gmail.com";
+        private string _userEmail = "";
         private bool _isWriteAccess;
         
         public ShareNodeViewModel(IPopupNavigation popupNavigation, Node node)
@@ -66,7 +67,7 @@ namespace BookeryMobile.ViewModels
                     throw new DataNotFoundException("User");
                 }
 
-                var result = await _sharedNodeService.Share(new UserNode
+                var result = await _sharingService.Share(new UserNode
                 {
                     NodeId = Node.Id,
                     UserId = user.Id,
@@ -97,9 +98,9 @@ namespace BookeryMobile.ViewModels
             return !string.IsNullOrEmpty(UserEmail);
         }
 
-        private async void LoadSharing()
+        private async Task LoadSharing()
         {
-            var sharing = await _sharedNodeService.GetSharing(Node.Id);
+            var sharing = await _sharingService.GetSharing(Node.Id);
             foreach (var userNode in sharing)
             {
                 Sharing.Add(await _userService.GetById(userNode.UserId));
@@ -108,7 +109,7 @@ namespace BookeryMobile.ViewModels
 
         private async void HideNode(User user)
         {
-            var result = await _sharedNodeService.Hide(new UserNode
+            var result = await _sharingService.Hide(new UserNode
             {
                 NodeId = Node.Id,
                 UserId = user.Id

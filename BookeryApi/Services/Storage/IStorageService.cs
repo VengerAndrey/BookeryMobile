@@ -9,7 +9,5 @@ namespace BookeryApi.Services.Storage
     {
         Task<bool> Upload(Guid id, Stream data, string filename);
         Task<Stream> Download(Guid id);
-        Task<bool> UploadProfilePhoto(Guid id, Stream data);
-        Task<Stream> DownloadProfilePhoto(Guid id);
     }
 }

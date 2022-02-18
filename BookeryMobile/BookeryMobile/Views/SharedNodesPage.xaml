@@ -9,7 +9,7 @@
              Title="{Binding Title}"
              BackgroundColor="{DynamicResource Background}">
     <ContentPage.ToolbarItems>
-        <ToolbarItem IconImageSource="createDirectory.png" x:DataType="viewModels:SharedNodesViewModel"
+        <ToolbarItem IconImageSource="folder_add.png" x:DataType="viewModels:SharedNodesViewModel"
                      Command="{Binding CreateDirectoryCommand}" />
         <ToolbarItem IconImageSource="upload.png" x:DataType="viewModels:SharedNodesViewModel"
                      Command="{Binding UploadFileCommand}" />

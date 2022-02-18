@@ -18,7 +18,7 @@ namespace BookeryApi.Services.User
 
         public async Task<Domain.Models.User> Get()
         {
-            var response = await _httpClient.GetAsync("");
+            var response = await _httpClient.GetAsync("self");
 
             if (response.IsSuccessStatusCode)
             {

@@ -3,6 +3,7 @@ using System.Threading;
 using System.Threading.Tasks;
 using BookeryApi.Services.Authentication;
 using BookeryApi.Services.Node;
+using BookeryApi.Services.Photo;
 using BookeryApi.Services.Storage;
 using BookeryApi.Services.User;
 using Domain.Models.DTOs.Requests;
@@ -15,10 +16,13 @@ namespace BookeryMobile.Services.Authentication
     {
         private readonly IAuthenticationService
             _authenticationService = DependencyService.Get<IAuthenticationService>();
+        private readonly ISignUpService _signUpService = DependencyService.Get<ISignUpService>();
         private readonly IPrivateNodeService _privateNodeService = DependencyService.Get<IPrivateNodeService>();
         private readonly ISharedNodeService _sharedNodeService = DependencyService.Get<ISharedNodeService>();
         private readonly IStorageService _storageService = DependencyService.Get<IStorageService>();
         private readonly IUserService _userService = DependencyService.Get<IUserService>();
+        private readonly IPhotoService _photoService = DependencyService.Get<IPhotoService>();
+        private readonly ISharingService _sharingService = DependencyService.Get<ISharingService>();
 
         private AuthenticationResponse _currentAuthenticationResponse;
 
@@ -33,17 +37,6 @@ namespace BookeryMobile.Services.Authentication
             _timer = new Timer(async o => { await RefreshToken(); }, null, TimeSpan.Zero,
                 _currentAuthenticationResponse.ExpireAt - DateTime.UtcNow);
             StateChanged?.Invoke();
-        }
-
-        public async Task<SignUpResult> SignUp(string email, string lastName, string firstName, string password)
-        {
-            return await _authenticationService.SignUp(new SignUpRequest()
-            {
-                Email = email,
-                LastName = lastName,
-                FirstName = firstName,
-                Password = password
-            });
         }
 
         public void SignOut()
@@ -77,6 +70,8 @@ namespace BookeryMobile.Services.Authentication
             _storageService.SetBearerToken(_currentAuthenticationResponse.AccessToken);
             _userService.SetBearerToken(_currentAuthenticationResponse.AccessToken);
             _sharedNodeService.SetBearerToken(_currentAuthenticationResponse.AccessToken);
+            _photoService.SetBearerToken(_currentAuthenticationResponse.AccessToken);
+            _sharingService.SetBearerToken(_currentAuthenticationResponse.AccessToken);
         }
     }
 }

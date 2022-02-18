@@ -8,7 +8,6 @@ namespace BookeryApi.Services.Authentication
     {
         Task<AuthenticationResponse> GetToken(AuthenticationRequest authenticationRequest);
         Task<AuthenticationResponse> RefreshToken(string accessToken, string refreshToken);
-        Task<SignUpResult> SignUp(SignUpRequest signUpRequest);
         Task LogOut();
     }
 }

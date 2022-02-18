@@ -1,5 +1,6 @@
 ﻿using BookeryApi.Services.Authentication;
 using BookeryApi.Services.Node;
+using BookeryApi.Services.Photo;
 using BookeryApi.Services.Storage;
 using BookeryApi.Services.User;
 using BookeryMobile.Services.Authentication;
@@ -21,6 +22,10 @@ namespace BookeryMobile
             DependencyService.Register<UserService>();
             DependencyService.Register<Cache>();
             DependencyService.Register<Authenticator>();
+            DependencyService.Register<SignUpService>();
+            DependencyService.Register<PhotoService>();
+            DependencyService.Register<SharingService>();
+            
             MainPage = new AppShell();
         }
 

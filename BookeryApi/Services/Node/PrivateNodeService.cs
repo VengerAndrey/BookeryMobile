@@ -9,7 +9,7 @@ namespace BookeryApi.Services.Node
 {
     public class PrivateNodeService : BaseService, IPrivateNodeService
     {
-        public PrivateNodeService() : base("Node/private")
+        public PrivateNodeService() : base("Node/Private")
         {
             
         }

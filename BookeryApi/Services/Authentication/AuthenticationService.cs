@@ -53,21 +53,9 @@ namespace BookeryApi.Services.Authentication
             return null;
         }
 
-        public async Task<SignUpResult> SignUp(SignUpRequest signUpRequest)
-        {
-            var response = await _httpClient.PostAsJsonAsync("sign-up", signUpRequest);
-
-            if (response.StatusCode == HttpStatusCode.ServiceUnavailable)
-            {
-                throw new ServiceUnavailableException();
-            }
-
-            return await response.Content.ReadAsAsync<SignUpResult>();
-        }
-
         public async Task LogOut()
         {
-            await _httpClient.PostAsync("log-out", null);
+            await _httpClient.DeleteAsync("sign-out");
         }
     }
 }

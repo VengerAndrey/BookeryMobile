@@ -11,8 +11,8 @@ namespace BookeryMobile.ViewModels
         private readonly IAuthenticator _authenticator = DependencyService.Get<IAuthenticator>();
         private readonly IMessage _message = DependencyService.Get<IMessage>();
 
-        private string _email = "user@gmail.com";
-        private string _password = "123";
+        private string _email = "";
+        private string _password = "";
 
         public SignInViewModel()
         {
