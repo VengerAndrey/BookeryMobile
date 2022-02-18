@@ -14,6 +14,6 @@ This project is a Xamarin client for the [`Bookery`](https://github.com/VengerAn
 
 ### Preview
 
-<p align=“center”>
-<img src="https://github.com/VengerAndrey/BookeryMobile/blob/master/Images/preview.gif">
+<p align="center">
+	<img width="216" heigth="454" src="https://github.com/VengerAndrey/BookeryMobile/blob/master/Images/preview.gif">
 </p>
