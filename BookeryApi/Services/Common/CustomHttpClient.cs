@@ -7,7 +7,7 @@ namespace BookeryApi.Services.Common
     {
         public CustomHttpClient(string endpoint = "")
         {
-            BaseAddress = new Uri("https://webapi-aq0.conveyor.cloud/api/" + endpoint.Trim('/') + '/');
+            BaseAddress = new Uri("http://40.113.7.124:5100/" + endpoint.Trim('/') + '/');
         }
     }
 }
