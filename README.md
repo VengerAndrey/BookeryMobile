@@ -1,16 +1,19 @@
 # Bookery Mobile
 
-### Idea
+**Bookery** is a multiplatform app that in general stands for a cloud drive. It uses hierarchical storage, supports basic operations like upload/download/rename/delete, and supports sharing. It is possible to share and hide nodes (folders or files) recursively.
 
-**Bookery** &mdash; is a multiplatform application that in general stands for a cloud drive. It uses a hierarchical storage, supports basic operations like upload/download/rename/delete and supports *sharing*. It is possible to share and hide nodes (folders or files) recursively.
-
-### Module info
-
-This is the Android client app. Project is splitted into domain, API and application itself layers. 
-*Currently it works with the deprecated version of [BookeryWebAPI](https://github.com/VengerAndrey/BookeryWebApi)*.
+This project is a Xamarin client for the [`Bookery`](https://github.com/VengerAndrey/Bookery) microservices.
 
 ### Tech stack
 
 - **.NET Core 5.0**, **Xamarin .NET**
 - **MVVM**
-- **JWT** authorization
+- **JWT** authentication
+- Local caching
+- Material design
+
+### Preview
+
+<p align=“center”>
+<img src="https://github.com/VengerAndrey/BookeryMobile/blob/master/Images/preview.gif">
+</p>
