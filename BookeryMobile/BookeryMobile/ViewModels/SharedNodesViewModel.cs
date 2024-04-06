@@ -1,12 +1,13 @@
 ﻿using System;
 using System.Collections.ObjectModel;
 using System.IO;
-using BookeryApi.Services.Node;
-using BookeryApi.Services.Storage;
 using BookeryMobile.Common;
-using BookeryMobile.Models;
+using BookeryMobile.Data.DTOs.Node.Input;
+using BookeryMobile.Data.DTOs.Node.Output;
+using BookeryMobile.Data.Models;
+using BookeryMobile.Services.Node.Interfaces;
+using BookeryMobile.Services.Storage;
 using BookeryMobile.Views;
-using Domain.Models;
 using Rg.Plugins.Popup.Pages;
 using Rg.Plugins.Popup.Services;
 using Xamarin.Essentials;
@@ -22,7 +23,7 @@ namespace BookeryMobile.ViewModels
         private readonly IStorageService _storageService = DependencyService.Get<IStorageService>();
         private readonly IMessage _message = DependencyService.Get<IMessage>();
         private readonly INavigation _navigation;
-        private PopupPage _page;
+        private PopupPage? _page;
 
         public SharedNodesViewModel(INavigation navigation, string path)
         {
@@ -43,11 +44,12 @@ namespace BookeryMobile.ViewModels
             {
                 Title = "Shared";
             }
+
             Nodes = new ObservableCollection<NodeElement>();
 
             LoadNodesCommand = new Command(LoadNodes);
-            SelectNodeCommand = new Command<Node>(SelectNode);
-            RenameNodeCommand = new Command<Node>(OpenRenameNodePopup);
+            SelectNodeCommand = new Command<NodeDto?>(SelectNode);
+            RenameNodeCommand = new Command<NodeDto?>(OpenRenameNodePopup);
             CreateDirectoryCommand = new Command(OpenCreateDirectoryPopup, () => _path.Length > 0);
             UploadFileCommand = new Command(UploadFile, () => _path.Length > 0);
 
@@ -63,8 +65,8 @@ namespace BookeryMobile.ViewModels
         public ObservableCollection<NodeElement> Nodes { get; }
 
         public Command LoadNodesCommand { get; }
-        public Command<Node> SelectNodeCommand { get; }
-        public Command<Node> RenameNodeCommand { get; }
+        public Command<NodeDto?> SelectNodeCommand { get; }
+        public Command<NodeDto?> RenameNodeCommand { get; }
         public Command CreateDirectoryCommand { get; }
         public Command UploadFileCommand { get; }
 
@@ -88,7 +90,7 @@ namespace BookeryMobile.ViewModels
             IsBusy = false;
         }
 
-        private async void SelectNode(Node node)
+        private async void SelectNode(NodeDto? node)
         {
             if (node != null)
             {
@@ -110,15 +112,19 @@ namespace BookeryMobile.ViewModels
             }
         }
 
-        private void OpenRenameNodePopup(Node node)
+        private void OpenRenameNodePopup(NodeDto? node)
         {
-            PushPopupPage(new AlterNodePage(new RenameNodeViewModel(PopupNavigation.Instance, _sharedNodeService, 
-                Path.Combine(_path, (_path.Length > 0) ? node.Name : node.Id.ToString()), node)));
+            if (node != null)
+            {
+                PushPopupPage(new AlterNodePage(new RenameNodeViewModel(PopupNavigation.Instance, _sharedNodeService,
+                    Path.Combine(_path, (_path.Length > 0) ? node.Name : node.Id.ToString()), node)));
+            }
         }
 
         private void OpenCreateDirectoryPopup()
         {
-            PushPopupPage(new AlterNodePage(new CreateDirectoryViewModel(PopupNavigation.Instance, _sharedNodeService, _path)));
+            PushPopupPage(
+                new AlterNodePage(new CreateDirectoryViewModel(PopupNavigation.Instance, _sharedNodeService, _path)));
         }
 
         private async void UploadFile()
@@ -132,22 +138,18 @@ namespace BookeryMobile.ViewModels
                 if (file != null)
                 {
                     PushPopupPage(new LoadingPage());
-            
+
                     var fileName = file.FileName;
-                    var node = await _sharedNodeService.Create(_path, new Node()
-                    {
-                        IsDirectory = false,
-                        Name = fileName
-                    });
+                    var node = await _sharedNodeService.Create(_path, new CreateNodeDto(fileName, false));
                     if (node == null)
                     {
                         _message.Short("Problem occurred...");
                         return;
                     }
-                    
+
                     var stream = await file.OpenReadAsync();
                     var result = await _storageService.Upload(node.Id, stream, fileName);
-            
+
                     if (!result)
                     {
                         _message.Short("File with the same name already exists.");
@@ -186,7 +188,10 @@ namespace BookeryMobile.ViewModels
         private async void SetRootTitle(Guid id)
         {
             var rootNode = await _sharingService.Details(id);
-            Title = rootNode.Name;
+            if (rootNode != null)
+            {
+                Title = rootNode.Name;
+            }
         }
     }
 }

@@ -1,10 +1,10 @@
-﻿using BookeryApi.Services.Authentication;
-using BookeryApi.Services.Node;
-using BookeryApi.Services.Photo;
-using BookeryApi.Services.Storage;
-using BookeryApi.Services.User;
-using BookeryMobile.Services.Authentication;
+﻿using BookeryMobile.Services.Authentication;
+using BookeryMobile.Services.Authenticator;
 using BookeryMobile.Services.Cache;
+using BookeryMobile.Services.Node.Implementations;
+using BookeryMobile.Services.Photo;
+using BookeryMobile.Services.Storage;
+using BookeryMobile.Services.User;
 using Xamarin.Forms;
 
 namespace BookeryMobile
@@ -22,7 +22,6 @@ namespace BookeryMobile
             DependencyService.Register<UserService>();
             DependencyService.Register<Cache>();
             DependencyService.Register<Authenticator>();
-            DependencyService.Register<SignUpService>();
             DependencyService.Register<PhotoService>();
             DependencyService.Register<SharingService>();
             

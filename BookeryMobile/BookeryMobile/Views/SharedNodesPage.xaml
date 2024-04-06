@@ -3,8 +3,9 @@
 <ContentPage xmlns="http://xamarin.com/schemas/2014/forms"
              xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
              xmlns:viewModels="clr-namespace:BookeryMobile.ViewModels;assembly=BookeryMobile"
-             xmlns:models="clr-namespace:BookeryMobile.Models;assembly=BookeryMobile"
              xmlns:xct="http://xamarin.com/schemas/2020/toolkit"
+             xmlns:data="clr-namespace:BookeryMobile.Data;assembly=BookeryMobile"
+             xmlns:models="clr-namespace:BookeryMobile.Data.Models;assembly=BookeryMobile"
              x:Class="BookeryMobile.Views.SharedNodesPage"
              Title="{Binding Title}"
              BackgroundColor="{DynamicResource Background}">

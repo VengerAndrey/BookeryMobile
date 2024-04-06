@@ -1,18 +1,15 @@
-﻿using System;
-using BookeryApi.Exceptions;
-using BookeryApi.Services.User;
-using BookeryMobile.Common;
-using BookeryMobile.Services.Authentication;
+﻿using BookeryMobile.Common;
+using BookeryMobile.Data.DTOs.User.Input;
+using BookeryMobile.Exceptions;
+using BookeryMobile.Services.User;
 using BookeryMobile.Views;
-using Domain.Models.DTOs.Requests;
-using Domain.Models.DTOs.Responses;
 using Xamarin.Forms;
 
 namespace BookeryMobile.ViewModels
 {
     internal class SignUpViewModel : BaseViewModel
     {
-        private readonly ISignUpService _signUpService = DependencyService.Get<ISignUpService>();
+        private readonly IUserService _signUpService = DependencyService.Get<IUserService>();
         private readonly IMessage _message = DependencyService.Get<IMessage>();
         private string _confirmPassword = "";
 
@@ -90,30 +87,19 @@ namespace BookeryMobile.ViewModels
 
         private async void SignUp()
         {
+            var userSignUpDto = new UserSignUpDto(Email, Password, FirstName, LastName);
             try
             {
-                var signUpRequest = new SignUpRequest
-                {
-                    Email = Email,
-                    LastName = LastName,
-                    FirstName = FirstName,
-                    Password = Password
-                };
-                var signUpResult = await _signUpService.SignUp(signUpRequest);
-
-                switch (signUpResult)
-                {
-                    default:
-                    case SignUpResult.Success:
-                        await Shell.Current.GoToAsync($"//{nameof(SignInPage)}");
-                        break;
-                    case SignUpResult.EmailAlreadyExists:
-                        _message.Short("Email already exists.");
-                        break;
-                    case SignUpResult.InvalidEmail:
-                        _message.Short("Email is invalid.");
-                        break;
-                }
+                await _signUpService.SignUp(userSignUpDto);
+                await Shell.Current.GoToAsync($"//{nameof(SignInPage)}");
+            }
+            catch (UserAlreadyExistsException)
+            {
+                _message.Short("Email is already is use.");
+            }
+            catch (InvalidEmailException)
+            {
+                _message.Short("Email is invalid.");
             }
             catch (ServiceUnavailableException e)
             {

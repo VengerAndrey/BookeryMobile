@@ -6,8 +6,8 @@
     xmlns:pages="clr-namespace:Rg.Plugins.Popup.Pages;assembly=Rg.Plugins.Popup"
     xmlns:animations="clr-namespace:Rg.Plugins.Popup.Animations;assembly=Rg.Plugins.Popup"
     xmlns:viewModels="clr-namespace:BookeryMobile.ViewModels;assembly=BookeryMobile"
-    xmlns:models="clr-namespace:Domain.Models;assembly=Domain"
     xmlns:xct="http://xamarin.com/schemas/2020/toolkit"
+    xmlns:output="clr-namespace:BookeryMobile.Data.DTOs.User.Output;assembly=BookeryMobile"
     x:Class="BookeryMobile.Views.ShareNodePage">
     <pages:PopupPage.Animation>
         <animations:ScaleAnimation
@@ -55,7 +55,7 @@
                                         </SwipeItemView>
                                     </SwipeItems>
                                 </SwipeView.LeftItems>
-                                <StackLayout Padding="10" Orientation="Horizontal" x:DataType="models:User"
+                                <StackLayout Padding="10" Orientation="Horizontal" x:DataType="output:UserDto"
                                              HeightRequest="28">
                                     <Label Text="{Binding Email}" FontSize="18"
                                            TextColor="{DynamicResource Foreground}" />

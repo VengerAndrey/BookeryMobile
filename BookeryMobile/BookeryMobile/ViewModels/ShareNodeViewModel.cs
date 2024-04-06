@@ -1,18 +1,19 @@
-﻿using System.Collections.Generic;
-using System.Collections.ObjectModel;
-using System.Linq;
+﻿using System.Collections.ObjectModel;
 using System.Threading.Tasks;
-using BookeryApi.Exceptions;
-using BookeryApi.Services.Node;
-using BookeryApi.Services.User;
 using BookeryMobile.Common;
-using Domain.Models;
+using BookeryMobile.Data.DTOs.Node.Input;
+using BookeryMobile.Data.DTOs.Node.Output;
+using BookeryMobile.Data.Enums;
+using BookeryMobile.Exceptions;
+using BookeryMobile.Services.Node.Interfaces;
+using BookeryMobile.Services.User;
 using Rg.Plugins.Popup.Contracts;
 using Xamarin.Forms;
+using UserDto = BookeryMobile.Data.DTOs.User.Output.UserDto;
 
 namespace BookeryMobile.ViewModels
 {
-    public class ShareNodeViewModel: BaseViewModel
+    public class ShareNodeViewModel : BaseViewModel
     {
         private readonly ISharingService _sharingService = DependencyService.Get<ISharingService>();
         private readonly IUserService _userService = DependencyService.Get<IUserService>();
@@ -20,20 +21,20 @@ namespace BookeryMobile.ViewModels
         private readonly IPopupNavigation _popupNavigation;
         private string _userEmail = "";
         private bool _isWriteAccess;
-        
-        public ShareNodeViewModel(IPopupNavigation popupNavigation, Node node)
+
+        public ShareNodeViewModel(IPopupNavigation popupNavigation, NodeDto node)
         {
             _popupNavigation = popupNavigation;
             Title = "Share item";
-            Node = node;
-            Sharing = new ObservableCollection<User>();
+            NodeDto = node;
+            Sharing = new ObservableCollection<UserDto>();
             SubmitCommand = new Command(ShareNode, CanShareNode);
-            HideNodeCommand = new Command<User>(HideNode);
-            LoadSharing();
+            HideNodeCommand = new Command<UserDto>(HideNode);
+            
         }
-        
-        public Node Node { get; set; }
-        
+
+        private NodeDto NodeDto { get; set; }
+
         public string UserEmail
         {
             get => _userEmail;
@@ -49,12 +50,14 @@ namespace BookeryMobile.ViewModels
             get => _isWriteAccess;
             set => SetProperty(ref _isWriteAccess, value);
         }
-        
-        public ObservableCollection<User> Sharing { get; }
+
+        public ObservableCollection<UserDto> Sharing { get; }
 
         public Command SubmitCommand { get; }
-        public Command<User> HideNodeCommand { get; }
-        
+        public Command<UserDto> HideNodeCommand { get; }
+
+        public Task OnAppearing() => LoadSharing();
+
         private async void ShareNode()
         {
             try
@@ -64,26 +67,18 @@ namespace BookeryMobile.ViewModels
 
                 if (owner is null || user is null)
                 {
-                    throw new DataNotFoundException("User");
+                    throw new UserNotFoundException();
                 }
 
-                var result = await _sharingService.Share(new UserNode
-                {
-                    NodeId = Node.Id,
-                    UserId = user.Id,
-                    AccessTypeId = IsWriteAccess ? AccessTypeId.Write : AccessTypeId.Read
-                });
+                var result = await _sharingService.Share(new ShareNodeDto(NodeDto.Id, user.Id,
+                    IsWriteAccess ? AccessTypeId.Write : AccessTypeId.Read));
 
                 if (result)
                 {
                     _message.Short("Shared successfully.");
                 }
             }
-            catch (ForbiddenException e)
-            {
-                _message.Short(e.Message);
-            }
-            catch (DataNotFoundException e)
+            catch (UserNotFoundException e)
             {
                 _message.Short(e.Message);
             }
@@ -92,7 +87,7 @@ namespace BookeryMobile.ViewModels
                 await _popupNavigation.PopAsync();
             }
         }
-        
+
         private bool CanShareNode()
         {
             return !string.IsNullOrEmpty(UserEmail);
@@ -100,26 +95,25 @@ namespace BookeryMobile.ViewModels
 
         private async Task LoadSharing()
         {
-            var sharing = await _sharingService.GetSharing(Node.Id);
-            foreach (var userNode in sharing)
+            var sharing = await _sharingService.GetSharing(NodeDto.Id);
+            if (sharing != null)
             {
-                Sharing.Add(await _userService.GetById(userNode.UserId));
+                foreach (var user in sharing)
+                {
+                    Sharing.Add(new UserDto(user.Id, user.Email, user.FirstName, user.LastName));
+                }
             }
         }
 
-        private async void HideNode(User user)
+        private async void HideNode(UserDto user)
         {
-            var result = await _sharingService.Hide(new UserNode
-            {
-                NodeId = Node.Id,
-                UserId = user.Id
-            });
-            
+            var result = await _sharingService.Hide(new HideNodeDto(NodeDto.Id, user.Id));
+
             if (result)
             {
                 _message.Short("Hidden successfully.");
             }
-            
+
             await _popupNavigation.PopAsync();
         }
     }

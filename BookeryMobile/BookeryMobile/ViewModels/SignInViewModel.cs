@@ -1,6 +1,6 @@
-﻿using BookeryApi.Exceptions;
-using BookeryMobile.Common;
-using BookeryMobile.Services.Authentication;
+﻿using BookeryMobile.Common;
+using BookeryMobile.Exceptions;
+using BookeryMobile.Services.Authenticator;
 using BookeryMobile.Views;
 using Xamarin.Forms;
 

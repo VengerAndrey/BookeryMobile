@@ -1,10 +1,11 @@
 ﻿using System;
+using System.Globalization;
 using System.IO;
-using BookeryApi.Services.Storage;
 using BookeryMobile.Common;
+using BookeryMobile.Data.DTOs.Node.Output;
 using BookeryMobile.Services.Cache;
+using BookeryMobile.Services.Storage;
 using BookeryMobile.Views;
-using Domain.Models;
 using Rg.Plugins.Popup.Services;
 using Xamarin.Essentials;
 using Xamarin.Forms;
@@ -17,7 +18,7 @@ namespace BookeryMobile.ViewModels
         private readonly ICache _cache = DependencyService.Get<ICache>();
         private readonly IMessage _message = DependencyService.Get<IMessage>();
 
-        public FileActionsViewModel(Node node)
+        public FileActionsViewModel(NodeDto node)
         {
             Node = node;
             SizeString = GetSizeString(node);
@@ -26,13 +27,13 @@ namespace BookeryMobile.ViewModels
             DownloadCommand = new Command(Download);
             DeleteDownloadCommand = new Command(DeleteDownload, () => IsCached);
         }
-        
-        public Node Node { get; set; }
+
+        private NodeDto Node { get; set; }
         
         public string SizeString { get; }
         public string CreatedString { get; }
         public string CachedString => IsCached ? "Yes" : "No";
-        public bool IsCached => _cache.FileExists(Node.Id.ToString());
+        private bool IsCached => _cache.FileExists(Node.Id.ToString());
         
         public Command OpenCommand { get; }
         public Command DownloadCommand { get; }
@@ -42,7 +43,7 @@ namespace BookeryMobile.ViewModels
         {
             await PopupNavigation.Instance.PushAsync(new LoadingPage());
 
-            Stream content;
+            Stream? content;
 
             if (_cache.FileExists(Node.Id.ToString()))
             {
@@ -90,28 +91,20 @@ namespace BookeryMobile.ViewModels
             await PopupNavigation.Instance.PopAllAsync();
         }
         
-        private string GetSizeString(Node node)
-        {
-            if (node.Size < 1000)
+        private string GetSizeString(NodeDto node) =>
+            node.Size switch
             {
-                return $"{node.Size} B";
-            }
-            if (node.Size < 1000 * 1000)
-            {
-                return $"{node.Size / 1000} KB";
-            }
-            if (node.Size < 1000 * 1000 * 1000)
-            {
-                return $"{node.Size / 1000 / 1000} MB";
-            }
-            return $"{node.Size / 1000 / 1000 / 1000} GB";
-        }
+                < 1000 => $"{node.Size} B",
+                < 1000 * 1000 => $"{node.Size / 1000} KB",
+                < 1000 * 1000 * 1000 => $"{node.Size / 1000 / 1000} MB",
+                _ => $"{node.Size / 1000 / 1000 / 1000} GB"
+            };
 
-        private string GetCreatedString(Node node)
+        private string GetCreatedString(NodeDto node)
         {
             var dateTime = new DateTime(1970, 1, 1, 0, 0, 0, 0, DateTimeKind.Utc);
             dateTime = dateTime.AddSeconds(node.CreationTimestamp).ToLocalTime();
-            return dateTime.ToString();
+            return dateTime.ToString(CultureInfo.InvariantCulture);
         }
     }
 }

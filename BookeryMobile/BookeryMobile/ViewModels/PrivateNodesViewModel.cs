@@ -1,13 +1,12 @@
 ﻿using System;
 using System.Collections.ObjectModel;
-using System.IO;
-using System.Net.Http;
-using BookeryApi.Services.Node;
-using BookeryApi.Services.Storage;
 using BookeryMobile.Common;
-using BookeryMobile.Models;
+using BookeryMobile.Data.DTOs.Node.Input;
+using BookeryMobile.Data.DTOs.Node.Output;
+using BookeryMobile.Data.Models;
+using BookeryMobile.Services.Node.Interfaces;
+using BookeryMobile.Services.Storage;
 using BookeryMobile.Views;
-using Domain.Models;
 using Rg.Plugins.Popup.Pages;
 using Rg.Plugins.Popup.Services;
 using Xamarin.Essentials;
@@ -22,7 +21,7 @@ namespace BookeryMobile.ViewModels
         private readonly IStorageService _storageService = DependencyService.Get<IStorageService>();
         private readonly IMessage _message = DependencyService.Get<IMessage>();
         private readonly INavigation _navigation;
-        private PopupPage _page;
+        private PopupPage? _page;
 
         public PrivateNodesViewModel(INavigation navigation, string path)
         {
@@ -39,12 +38,12 @@ namespace BookeryMobile.ViewModels
             Nodes = new ObservableCollection<NodeElement>();
 
             LoadNodesCommand = new Command(LoadNodes);
-            SelectNodeCommand = new Command<Node>(SelectNode);
-            DeleteNodeCommand = new Command<Node>(DeleteNode);
-            RenameNodeCommand = new Command<Node>(OpenRenameNodePopup);
+            SelectNodeCommand = new Command<NodeDto>(SelectNode);
+            DeleteNodeCommand = new Command<NodeDto>(DeleteNode);
+            RenameNodeCommand = new Command<NodeDto>(OpenRenameNodePopup);
             CreateDirectoryCommand = new Command(OpenCreateDirectoryPopup);
             UploadFileCommand = new Command(UploadFile);
-            ShareNodeCommand = new Command<Node>(OpenShareNodePopup);
+            ShareNodeCommand = new Command<NodeDto>(OpenShareNodePopup);
 
             PopupNavigation.Instance.Popping += (sender, args) =>
             {
@@ -58,12 +57,12 @@ namespace BookeryMobile.ViewModels
         public ObservableCollection<NodeElement> Nodes { get; }
 
         public Command LoadNodesCommand { get; }
-        public Command<Node> SelectNodeCommand { get; }
-        public Command<Node> DeleteNodeCommand { get; }
-        public Command<Node> RenameNodeCommand { get; }
+        public Command<NodeDto> SelectNodeCommand { get; }
+        public Command<NodeDto> DeleteNodeCommand { get; }
+        public Command<NodeDto> RenameNodeCommand { get; }
         public Command CreateDirectoryCommand { get; }
         public Command UploadFileCommand { get; }
-        public Command<Node> ShareNodeCommand { get; }
+        public Command<NodeDto> ShareNodeCommand { get; }
 
         private async void LoadNodes()
         {
@@ -85,7 +84,7 @@ namespace BookeryMobile.ViewModels
             IsBusy = false;
         }
 
-        private async void SelectNode(Node node)
+        private async void SelectNode(NodeDto? node)
         {
             if (node != null)
             {
@@ -100,12 +99,12 @@ namespace BookeryMobile.ViewModels
             }
         }
 
-        private void OpenRenameNodePopup(Node node)
+        private void OpenRenameNodePopup(NodeDto node)
         {
             PushPopupPage(new AlterNodePage(new RenameNodeViewModel(PopupNavigation.Instance, _nodeService, _path + '/' + node.Name, node)));
         }
 
-        private async void DeleteNode(Node node)
+        private async void DeleteNode(NodeDto? node)
         {
             if (node != null)
             {
@@ -127,9 +126,9 @@ namespace BookeryMobile.ViewModels
             PushPopupPage(new AlterNodePage(new CreateDirectoryViewModel(PopupNavigation.Instance, _nodeService, _path)));
         }
         
-        private void OpenShareNodePopup(Node node)
+        private void OpenShareNodePopup(NodeDto node)
         {
-            PushPopupPage(new ShareNodePage(new ShareNodeViewModel(PopupNavigation.Instance, node)));
+            PushPopupPage(new ShareNodePage(node));
         }
 
         private async void UploadFile()
@@ -145,11 +144,7 @@ namespace BookeryMobile.ViewModels
                     PushPopupPage(new LoadingPage());
             
                     var fileName = file.FileName;
-                    var node = await _nodeService.Create(_path, new Node()
-                    {
-                        IsDirectory = false,
-                        Name = fileName
-                    });
+                    var node = await _nodeService.Create(_path, new CreateNodeDto(fileName, false));
                     if (node == null)
                     {
                         _message.Short("Problem occurred...");

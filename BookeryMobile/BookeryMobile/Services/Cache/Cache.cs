@@ -18,7 +18,7 @@ namespace BookeryMobile.Services.Cache
             return Directory.GetFiles(_path).Length > 0;
         }
 
-        public Stream GetFile(string filename)
+        public Stream? GetFile(string filename)
         {
             return File.OpenRead(Path.Combine(_path, filename));
         }

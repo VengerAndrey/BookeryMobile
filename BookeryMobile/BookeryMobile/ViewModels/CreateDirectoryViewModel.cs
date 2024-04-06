@@ -1,9 +1,7 @@
-﻿using System;
-using BookeryApi.Exceptions;
-using BookeryApi.Services.Node;
-using BookeryApi.Services.Storage;
-using BookeryMobile.Common;
-using Domain.Models;
+﻿using BookeryMobile.Common;
+using BookeryMobile.Data.DTOs.Node.Input;
+using BookeryMobile.Exceptions;
+using BookeryMobile.Services.Node.Interfaces;
 using Rg.Plugins.Popup.Contracts;
 using Xamarin.Forms;
 
@@ -23,6 +21,7 @@ namespace BookeryMobile.ViewModels
             _nodeService = nodeService;
             Title = "Create";
             _path = path;
+            _name = string.Empty;
             SubmitCommand = new Command(CreateDirectory, CanCreateDirectory);
         }
 
@@ -42,11 +41,7 @@ namespace BookeryMobile.ViewModels
         {
             try
             {
-                await _nodeService.Create(_path, new Node()
-                {
-                    IsDirectory = true,
-                    Name = Name
-                });
+                await _nodeService.Create(_path, new CreateNodeDto(Name, true));
             }
             catch (NameConflictException e)
             {

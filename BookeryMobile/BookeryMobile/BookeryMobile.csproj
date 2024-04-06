@@ -5,16 +5,18 @@
     <ProduceReferenceAssembly>true</ProduceReferenceAssembly>
   </PropertyGroup>
 
+  <PropertyGroup>
+    <LangVersion>9.0</LangVersion>
+    <Nullable>enable</Nullable>
+  </PropertyGroup>
+
   <ItemGroup>
+    <PackageReference Include="Microsoft.AspNet.WebApi.Client" Version="6.0.0" />
     <PackageReference Include="Rg.Plugins.Popup" Version="2.0.0.12" />
     <PackageReference Include="Xamarin.CommunityToolkit" Version="2.0.0" />
     <PackageReference Include="Xamarin.Forms" Version="5.0.0.2337" />  
     <PackageReference Include="Xamarin.Essentials" Version="1.6.1" />  
     <PackageReference Include="Xamarin.Forms.Visual.Material" Version="5.0.0.2337" />
-  </ItemGroup>
-
-  <ItemGroup>
-    <ProjectReference Include="..\..\BookeryApi\BookeryApi.csproj" />
   </ItemGroup>
 
   <ItemGroup>
@@ -41,6 +43,10 @@
     </EmbeddedResource>
     <EmbeddedResource Update="Views\SignUpPage.xaml">
       <Generator>MSBuild:UpdateDesignTimeXaml</Generator>
+    </EmbeddedResource>
+    <None Remove="appsettings.json" />
+    <EmbeddedResource Include="appsettings.json">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </EmbeddedResource>
   </ItemGroup>
 </Project>

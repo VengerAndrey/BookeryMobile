@@ -1,12 +1,12 @@
 ﻿using System;
-using Domain.Models;
+using BookeryMobile.Data.DTOs.Node.Output;
 using Xamarin.Forms;
 
 namespace BookeryMobile.Common
 {
     internal static class FileIconHelper
     {
-        public static ImageSource GetImageSource(Node node)
+        public static ImageSource GetImageSource(NodeDto node)
         {
             ImageSource imageSource;
 
@@ -16,7 +16,7 @@ namespace BookeryMobile.Common
             }
             else
             {
-                var fileExtension = node.Name.Substring(node.Name.LastIndexOf(".") + 1);
+                var fileExtension = node.Name.Substring(node.Name.LastIndexOf(".", StringComparison.Ordinal) + 1);
                 // if (Enum.TryParse<FileExtension>(fileExtension, true, out var res))
                 // {
                 //     imageSource = ImageSource.FromFile($"{fileExtension}.png");

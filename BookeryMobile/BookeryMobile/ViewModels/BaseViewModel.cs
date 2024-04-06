@@ -7,25 +7,25 @@ namespace BookeryMobile.ViewModels
 {
     public class BaseViewModel : INotifyPropertyChanged
     {
-        private bool isBusy;
+        private bool _isBusy;
 
-        private string title = string.Empty;
+        private string _title = string.Empty;
 
         public bool IsBusy
         {
-            get => isBusy;
-            set => SetProperty(ref isBusy, value);
+            get => _isBusy;
+            set => SetProperty(ref _isBusy, value);
         }
 
         public string Title
         {
-            get => title;
-            set => SetProperty(ref title, value);
+            get => _title;
+            set => SetProperty(ref _title, value);
         }
 
         protected bool SetProperty<T>(ref T backingStore, T value,
             [CallerMemberName] string propertyName = "",
-            Action onChanged = null)
+            Action? onChanged = null)
         {
             if (EqualityComparer<T>.Default.Equals(backingStore, value))
             {
@@ -40,17 +40,13 @@ namespace BookeryMobile.ViewModels
 
         #region INotifyPropertyChanged
 
-        public event PropertyChangedEventHandler PropertyChanged;
+        public event PropertyChangedEventHandler? PropertyChanged;
 
         protected void OnPropertyChanged([CallerMemberName] string propertyName = "")
         {
             var changed = PropertyChanged;
-            if (changed == null)
-            {
-                return;
-            }
 
-            changed.Invoke(this, new PropertyChangedEventArgs(propertyName));
+            changed?.Invoke(this, new PropertyChangedEventArgs(propertyName));
         }
 
         #endregion

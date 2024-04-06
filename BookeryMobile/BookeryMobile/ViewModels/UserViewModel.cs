@@ -1,18 +1,16 @@
 ﻿using System;
 using System.IO;
-using System.Threading.Tasks;
 using System.Windows.Input;
-using BookeryApi.Exceptions;
-using BookeryApi.Services.Photo;
-using BookeryApi.Services.User;
 using BookeryMobile.Common;
-using BookeryMobile.Services.Authentication;
+using BookeryMobile.Data.DTOs.User.Output;
+using BookeryMobile.Exceptions;
+using BookeryMobile.Services.Authenticator;
 using BookeryMobile.Services.Cache;
+using BookeryMobile.Services.Photo;
+using BookeryMobile.Services.User;
 using BookeryMobile.Views;
-using Domain.Models;
 using Rg.Plugins.Popup.Pages;
 using Rg.Plugins.Popup.Services;
-using Xamarin.CommunityToolkit.Extensions;
 using Xamarin.Essentials;
 using Xamarin.Forms;
 
@@ -26,9 +24,9 @@ namespace BookeryMobile.ViewModels
         private readonly IMessage _message = DependencyService.Get<IMessage>();
         private readonly ICache _cache = DependencyService.Get<ICache>();
         private ImageSource _profileImageSource;
-        private PopupPage _page;
+        private PopupPage? _page;
 
-        private User _user;
+        private UserDto _user;
 
         public UserViewModel()
         {
@@ -50,7 +48,7 @@ namespace BookeryMobile.ViewModels
         public ICommand LogOutCommand { get; }
         public Command ClearCacheCommand { get; }
 
-        public User User
+        public UserDto User
         {
             get => _user;
             set
@@ -79,7 +77,7 @@ namespace BookeryMobile.ViewModels
                 User = await _userService.Get();
                 LoadProfileImageCommand.Execute(null);
             }
-            catch (DataNotFoundException e)
+            catch (UserNotFoundException e)
             {
                 _message.Short(e.Message);
             }

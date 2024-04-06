@@ -1,8 +1,9 @@
-﻿using BookeryApi.Exceptions;
-using BookeryApi.Services.Node;
-using BookeryApi.Services.Storage;
+﻿using System;
 using BookeryMobile.Common;
-using Domain.Models;
+using BookeryMobile.Data.DTOs.Node.Input;
+using BookeryMobile.Data.DTOs.Node.Output;
+using BookeryMobile.Exceptions;
+using BookeryMobile.Services.Node.Interfaces;
 using Rg.Plugins.Popup.Contracts;
 using Xamarin.Forms;
 
@@ -15,40 +16,45 @@ namespace BookeryMobile.ViewModels
         private readonly IMessage _message = DependencyService.Get<IMessage>();
         private readonly IPopupNavigation _popupNavigation;
         private readonly string _path;
-        
-        public RenameNodeViewModel(IPopupNavigation popupNavigation, INodeUpdateService nodeService, string path, Node node)
+
+        public RenameNodeViewModel(IPopupNavigation popupNavigation, INodeUpdateService nodeService, string path,
+            NodeDto node)
         {
             _popupNavigation = popupNavigation;
             _nodeService = nodeService;
             Title = "Rename";
             _path = path.Trim('/');
-            Node = node;
-            _extension = node.IsDirectory || !node.Name.Contains(".") ? "" : node.Name.Substring(node.Name.LastIndexOf('.'));
+            _name = node.Name;
+            _isDirectory = node.IsDirectory;
+            _size = node.Size;
+            _extension = _isDirectory || !_name.Contains(".") ? "" : _name.Substring(_name.LastIndexOf('.'));
             SubmitCommand = new Command(RenameItem, CanRenameItem);
         }
-        
-        public Node Node { get; set; }
-        
+
+        private readonly bool _isDirectory;
+        private readonly long? _size;
+        private string _name;
+
         public string Name
         {
-            get => Node.IsDirectory || !Node.Name.Contains(".") ? Node.Name : Node.Name.Substring(0, Node.Name.LastIndexOf('.'));
+            get => _isDirectory || !_name.Contains(".") ? _name : _name.Substring(0, _name.LastIndexOf('.'));
             set
             {
-                Node.Name = value + _extension;
+                _name = value + _extension;
                 OnPropertyChanged(nameof(Name));
                 SubmitCommand.ChangeCanExecute();
             }
         }
-        
+
         public Command SubmitCommand { get; }
-        
+
         private async void RenameItem()
         {
             try
             {
-                await _nodeService.Update(_path, Node);
+                await _nodeService.Update(_path, new UpdateNodeDto(_name, _size, Guid.Empty));
             }
-            catch (ForbiddenException e)
+            catch (NameConflictException e)
             {
                 _message.Short(e.Message);
             }
@@ -61,7 +67,7 @@ namespace BookeryMobile.ViewModels
                 await _popupNavigation.PopAsync();
             }
         }
-        
+
         private bool CanRenameItem()
         {
             return !string.IsNullOrEmpty(Name);
