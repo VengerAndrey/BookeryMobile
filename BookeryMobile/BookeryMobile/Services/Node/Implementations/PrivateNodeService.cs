@@ -53,7 +53,7 @@ namespace BookeryMobile.Services.Node.Implementations
 
             if (response.IsSuccessStatusCode)
             {
-                var newPath = await response.Content.ReadAsAsync<string>();
+                var newPath = await response.Content.ReadAsStringAsync();
                 return newPath;
             }
             
