@@ -36,8 +36,8 @@
                    IsClippedToBounds="True"
                    BackgroundColor="{DynamicResource Background}">
                 <Image Source="{Binding ProfileImageSource, Mode=TwoWay}"
-                       HorizontalOptions="Center"
-                       VerticalOptions="Center" />
+                       HorizontalOptions="FillAndExpand"
+                       VerticalOptions="FillAndExpand" />
                 <Frame.GestureRecognizers>
                     <TapGestureRecognizer
                         NumberOfTapsRequired="1"
