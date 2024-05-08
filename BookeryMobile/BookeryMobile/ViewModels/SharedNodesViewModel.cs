@@ -1,10 +1,12 @@
 ﻿using System;
 using System.Collections.ObjectModel;
 using System.IO;
+using System.Linq;
 using BookeryMobile.Common;
 using BookeryMobile.Data.DTOs.Node.Input;
 using BookeryMobile.Data.DTOs.Node.Output;
 using BookeryMobile.Data.Models;
+using BookeryMobile.Exceptions;
 using BookeryMobile.Services.Node.Interfaces;
 using BookeryMobile.Services.Storage;
 using BookeryMobile.Views;
@@ -140,19 +142,33 @@ namespace BookeryMobile.ViewModels
                     PushPopupPage(new LoadingPage());
 
                     var fileName = file.FileName;
-                    var node = await _sharedNodeService.Create(_path, new CreateNodeDto(fileName, false));
+                    NodeDto? node = null;
+                    
+                    try
+                    {
+                        node = await _sharedNodeService.Create(_path, new CreateNodeDto(fileName, false));
+                    }
+                    catch (NameConflictException)
+                    {
+                        var existingNodeElement = Nodes.FirstOrDefault(x => x.Node.Name == fileName);
+                        if (existingNodeElement != null)
+                        {
+                            node = existingNodeElement.Node;
+                        }
+                    }
+                    
                     if (node == null)
                     {
-                        _message.Short("Problem occurred...");
+                        _message.Short("Unexpected error occurred.");
                         return;
                     }
-
+                    
                     var stream = await file.OpenReadAsync();
                     var result = await _storageService.Upload(node.Id, stream, fileName);
 
                     if (!result)
                     {
-                        _message.Short("File with the same name already exists.");
+                        _message.Short("Unexpected error occurred.");
                     }
                 }
             }
