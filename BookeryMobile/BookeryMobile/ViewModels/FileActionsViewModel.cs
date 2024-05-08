@@ -30,6 +30,7 @@ namespace BookeryMobile.ViewModels
 
         private NodeDto Node { get; set; }
         
+        public string NodeNameString => Node.Name;
         public string SizeString { get; }
         public string CreatedString { get; }
         public string CachedString => IsCached ? "Yes" : "No";
