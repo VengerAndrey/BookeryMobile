@@ -14,23 +14,23 @@
         <StackLayout Padding="10,0,10,0" VerticalOptions="Center">
             <Image Source="logo.png" BackgroundColor="Transparent" WidthRequest="100" HeightRequest="100" />
             <Label Text="Bookery" TextColor="{DynamicResource Foreground}" FontSize="45" HorizontalOptions="Center"
-                   Margin="0, 0, 0, 20" />
-            <Entry Style="{DynamicResource DefaultEntry}" Placeholder="Email" FontSize="20"
+                   Margin="0, 0, 0, 15" />
+            <Entry Style="{DynamicResource DefaultEntry}" Placeholder="Email" FontSize="16"
                    Text="{Binding Email, Mode=TwoWay}" />
-            <Entry Style="{DynamicResource DefaultEntry}" Placeholder="First name" FontSize="20"
+            <Entry Style="{DynamicResource DefaultEntry}" Placeholder="First name" FontSize="16"
                    Text="{Binding FirstName, Mode=TwoWay}" />
-            <Entry Style="{DynamicResource DefaultEntry}" Placeholder="Last name" FontSize="20"
+            <Entry Style="{DynamicResource DefaultEntry}" Placeholder="Last name" FontSize="16"
                    Text="{Binding LastName, Mode=TwoWay}" />
-            <Entry Style="{DynamicResource DefaultEntry}" Placeholder="Password" FontSize="20"
+            <Entry Style="{DynamicResource DefaultEntry}" Placeholder="Password" FontSize="16"
                    Text="{Binding Password, Mode=TwoWay}"
                    IsPassword="True" />
-            <Entry Style="{DynamicResource DefaultEntry}" Placeholder="Confirm password" FontSize="20"
+            <Entry Style="{DynamicResource DefaultEntry}" Placeholder="Confirm password" FontSize="16"
                    Text="{Binding ConfirmPassword, Mode=TwoWay}"
                    IsPassword="True" />
             <Button Style="{DynamicResource PrimaryButton}" HorizontalOptions="Center" Text="Sign up"
                     Command="{Binding SignUpCommand}"
-                    Margin="0, 20, 0, 20" />
-            <Label HorizontalOptions="Center" Margin="0, 0, 0, 20" Text="or" TextColor="{DynamicResource Foreground}"
+                    Margin="0, 15, 0, 15" />
+            <Label HorizontalOptions="Center" Margin="0, 0, 0, 15" Text="or" TextColor="{DynamicResource Foreground}"
                    FontSize="16" />
             <Button Style="{DynamicResource SecondaryButton}" HorizontalOptions="Center" Text="Sign in"
                     Command="{Binding ViewSignInCommand}" />
